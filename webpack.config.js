@@ -5,5 +5,8 @@ module.exports = {
     mode: 'production',
     plugins: [
         new HtmlWebpackPlugin({ template: 'src/index.html' })
-    ]
+    ],
+    output: {
+        clean: true
+    }
 };
