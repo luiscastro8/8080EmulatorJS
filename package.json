@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
-    "lint": "eslint src --ext .ts,.html",
+    "lint": "eslint src --ext .ts",
     "test": "jest"
   },
   "devDependencies": {
