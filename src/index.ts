@@ -1,9 +1,9 @@
-const canvas = <HTMLCanvasElement>document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvas = <HTMLCanvasElement>document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const imageData = ctx.createImageData(100, 100);
 
-const fileInput = < HTMLInputElement>document.getElementById('fileinput');
-fileInput.addEventListener('change', (e) => {
+const fileInput = <HTMLInputElement>document.getElementById("fileinput");
+fileInput.addEventListener("change", (e) => {
   const reader = new FileReader();
   reader.onloadend = () => {
     // console.log(reader.result);
