@@ -6,7 +6,8 @@ const fileInput = <HTMLInputElement>document.getElementById("fileinput");
 fileInput.addEventListener("change", (e) => {
   const reader = new FileReader();
   reader.onloadend = () => {
-    // console.log(reader.result);
+    // const buffer = new Uint8Array(<ArrayBuffer>reader.result);
+    // console.log(buffer);
   };
   const file = (<HTMLInputElement>e.target).files[0];
   reader.readAsArrayBuffer(file);

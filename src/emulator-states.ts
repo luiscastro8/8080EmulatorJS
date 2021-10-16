@@ -47,3 +47,16 @@ export default class State8080 {
     this.eightBitRegisters[6] = num;
   };
 }
+
+export class ConditionCodes {
+  public z : boolean;
+  public s : boolean;
+  public p : boolean;
+  public cy : boolean;
+  public ac : boolean;
+  // TODO see if pad is needed
+}
+
+export class Ports {
+  
+}

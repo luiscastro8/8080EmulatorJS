@@ -1,4 +1,4 @@
-import State8080 from "../src/emulator";
+import State8080 from "../src/emulator-states";
 
 test("8 bit registers are correctly mapped", () => {
   const state = new State8080();
