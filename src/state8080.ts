@@ -19,6 +19,12 @@ export default class State8080 {
 
   constructor() {
     this.a = 0;
+    this.b = 0;
+    this.c = 0;
+    this.d = 0;
+    this.e = 0;
+    this.h = 0;
+    this.l = 0;
     this.enableInterrupt = false;
     this.sp = 0xf000;
   }
