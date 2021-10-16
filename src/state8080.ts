@@ -1,3 +1,6 @@
+import ConditionCodes from "./condition-codes";
+import Ports from "./ports";
+
 export default class State8080 {
   private a: number;
 
@@ -21,6 +24,10 @@ export default class State8080 {
 
   private memory: Uint8Array;
 
+  private cc: ConditionCodes;
+
+  private ports: Ports;
+
   constructor() {
     this.a = 0;
     this.b = 0;
@@ -33,6 +40,8 @@ export default class State8080 {
     this.sp = 0xf000;
     this.pc = 0;
     this.memory = new Uint8Array(0xffff);
+    this.cc = new ConditionCodes();
+    this.ports = new Ports();
   }
 
   public getA = () => this.a;
@@ -56,6 +65,10 @@ export default class State8080 {
   public getPC = () => this.pc;
 
   public getMemory = () => this.memory;
+
+  public getCC = () => this.cc;
+
+  public getPorts = () => this.ports;
 
   public setA = (num: number) => {
     this.a = num & 0xff;

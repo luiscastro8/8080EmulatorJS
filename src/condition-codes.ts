@@ -1,12 +1,12 @@
 export default class ConditionCodes {
-  public z: boolean;
+  public z: boolean = false;
 
-  public s: boolean;
+  public s: boolean = false;
 
-  public p: boolean;
+  public p: boolean = false;
 
-  public cy: boolean;
+  public cy: boolean = false;
 
-  public ac: boolean;
+  public ac: boolean = false;
   // TODO see if pad is needed
 }

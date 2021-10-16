@@ -1,3 +1,5 @@
+import ConditionCodes from "../src/condition-codes";
+import Ports from "../src/ports";
 import State8080 from "../src/state8080";
 
 describe("state8080", () => {
@@ -92,4 +94,18 @@ describe("state8080", () => {
     state.getMemory()[1] = 257;
     expect(state.getMemory()[1]).toBe(1);
   });
+
+  test("condition codes", () => {
+    expect(state.getCC()).toBeInstanceOf(ConditionCodes);
+    expect(state.getCC().ac).toBe(false);
+    state.getCC().ac = true;
+    expect(state.getCC().ac).toBe(true);
+  })
+
+  test("ports", () => {
+    expect(state.getPorts()).toBeInstanceOf(Ports);
+    expect(state.getPorts().getR0()).toBe(0);
+    state.getPorts().setR0(1);
+    expect(state.getPorts().getR0()).toBe(1);
+  })
 });

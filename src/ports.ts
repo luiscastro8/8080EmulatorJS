@@ -1,15 +1,15 @@
 export default class Ports {
-  private r0: number;
+  private r0: number = 0;
 
-  private r1: number;
+  private r1: number = 0;
 
-  private r2: number;
+  private r2: number = 0;
 
-  private w3: number;
+  private w3: number = 0;
 
-  private w5: number;
+  private w5: number = 0;
 
-  private w6: number;
+  private w6: number = 0;
 
   public getR0 = () => this.r0;
 
