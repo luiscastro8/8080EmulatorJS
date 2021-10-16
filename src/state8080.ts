@@ -13,6 +13,16 @@ export default class State8080 {
 
   private l: number;
 
+  private enableInterrupt: boolean;
+
+  private sp: number;
+
+  constructor() {
+    this.a = 0;
+    this.enableInterrupt = false;
+    this.sp = 0xf000;
+  }
+
   public getA = () => this.a;
 
   public getB = () => this.b;
@@ -26,6 +36,10 @@ export default class State8080 {
   public getH = () => this.h;
 
   public getL = () => this.l;
+
+  public getEnableInterrupt = () => this.enableInterrupt;
+
+  public getSP = () => this.sp;
 
   public setA = (num: number) => {
     this.a = num & 0xff;
@@ -54,4 +68,12 @@ export default class State8080 {
   public setL = (num: number) => {
     this.l = num & 0xff;
   };
+
+  public setEnableInterrupt = (val: boolean) => {
+    this.enableInterrupt = val;
+  }
+
+  public setSP = (val: number) => {
+    this.sp = val & 0xffff;
+  }
 }
