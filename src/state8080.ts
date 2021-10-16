@@ -2,25 +2,25 @@ import ConditionCodes from "./condition-codes";
 import Ports from "./ports";
 
 export default class State8080 {
-  private a: number;
+  private a: number; // 8 bit
 
-  private b: number;
+  private b: number; // 8 bit
 
-  private c: number;
+  private c: number; // 8 bit
 
-  private d: number;
+  private d: number; // 8 bit
 
-  private e: number;
+  private e: number; // 8 bit
 
-  private h: number;
+  private h: number; // 8 bit
 
-  private l: number;
+  private l: number; // 8 bit
 
   private enableInterrupt: boolean;
 
-  private sp: number;
+  private sp: number; // 16 bit
 
-  private pc: number;
+  private pc: number; // 16 bit
 
   private memory: Uint8Array;
 
