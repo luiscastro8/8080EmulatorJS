@@ -71,9 +71,9 @@ export default class State8080 {
 
   public setEnableInterrupt = (val: boolean) => {
     this.enableInterrupt = val;
-  }
+  };
 
   public setSP = (val: number) => {
     this.sp = val & 0xffff;
-  }
+  };
 }
