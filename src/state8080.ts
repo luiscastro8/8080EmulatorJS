@@ -1,10 +1,16 @@
 export default class State8080 {
   private a: number;
+
   private b: number;
+
   private c: number;
+
   private d: number;
+
   private e: number;
+
   private h: number;
+
   private l: number;
 
   public getA = () => this.a;

@@ -1,6 +1,6 @@
 import State8080 from "../src/state8080";
 
-test("8 bit registers are 8 bit", () => {
+test("8 bit registers shoulb be 8 bit", () => {
   const state = new State8080();
 
   state.setA(255);
