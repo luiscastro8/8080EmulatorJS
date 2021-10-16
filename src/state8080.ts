@@ -17,6 +17,8 @@ export default class State8080 {
 
   private sp: number;
 
+  private pc: number;
+
   constructor() {
     this.a = 0;
     this.b = 0;
@@ -27,6 +29,7 @@ export default class State8080 {
     this.l = 0;
     this.enableInterrupt = false;
     this.sp = 0xf000;
+    this.pc = 0;
   }
 
   public getA = () => this.a;
@@ -46,6 +49,8 @@ export default class State8080 {
   public getEnableInterrupt = () => this.enableInterrupt;
 
   public getSP = () => this.sp;
+
+  public getPC = () => this.pc;
 
   public setA = (num: number) => {
     this.a = num & 0xff;
@@ -82,4 +87,8 @@ export default class State8080 {
   public setSP = (val: number) => {
     this.sp = val & 0xffff;
   };
+
+  public setPC = (val: number) => {
+    this.pc = val & 0xffff;
+  }
 }
