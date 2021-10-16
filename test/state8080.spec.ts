@@ -77,11 +77,19 @@ describe("state8080", () => {
     expect(state.getSP()).toBe(0);
   });
 
-  test('program counter', () => {
+  test("program counter", () => {
     expect(state.getPC()).toBe(0);
     state.setPC(0xffff);
     expect(state.getPC()).toBe(0xffff);
     state.setPC(0xf0001);
     expect(state.getPC()).toBe(1);
-  })
+  });
+
+  test("memory", () => {
+    expect(state.getMemory()).toHaveLength(0xffff);
+    state.getMemory()[0] = 255;
+    expect(state.getMemory()[0]).toBe(255);
+    state.getMemory()[1] = 257;
+    expect(state.getMemory()[1]).toBe(1);
+  });
 });

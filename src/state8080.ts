@@ -19,6 +19,8 @@ export default class State8080 {
 
   private pc: number;
 
+  private memory: Uint8Array;
+
   constructor() {
     this.a = 0;
     this.b = 0;
@@ -30,6 +32,7 @@ export default class State8080 {
     this.enableInterrupt = false;
     this.sp = 0xf000;
     this.pc = 0;
+    this.memory = new Uint8Array(0xffff);
   }
 
   public getA = () => this.a;
@@ -51,6 +54,8 @@ export default class State8080 {
   public getSP = () => this.sp;
 
   public getPC = () => this.pc;
+
+  public getMemory = () => this.memory;
 
   public setA = (num: number) => {
     this.a = num & 0xff;
@@ -90,5 +95,5 @@ export default class State8080 {
 
   public setPC = (val: number) => {
     this.pc = val & 0xffff;
-  }
+  };
 }
