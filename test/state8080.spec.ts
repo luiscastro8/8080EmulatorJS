@@ -100,12 +100,18 @@ describe("state8080", () => {
     expect(state.getCC().ac).toBe(false);
     state.getCC().ac = true;
     expect(state.getCC().ac).toBe(true);
-  })
+  });
 
   test("ports", () => {
     expect(state.getPorts()).toBeInstanceOf(Ports);
     expect(state.getPorts().getR0()).toBe(0);
     state.getPorts().setR0(1);
     expect(state.getPorts().getR0()).toBe(1);
-  })
+  });
+
+  test("cycles", () => {
+    expect(state.getCycles()).toBe(16667);
+    state.setCycles(1);
+    expect(state.getCycles()).toBe(1);
+  });
 });

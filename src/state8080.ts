@@ -28,6 +28,8 @@ export default class State8080 {
 
   private ports: Ports;
 
+  private cycles: number;
+
   constructor() {
     this.a = 0;
     this.b = 0;
@@ -42,6 +44,7 @@ export default class State8080 {
     this.memory = new Uint8Array(0xffff);
     this.cc = new ConditionCodes();
     this.ports = new Ports();
+    this.cycles = 16667;
   }
 
   public getA = () => this.a;
@@ -69,6 +72,8 @@ export default class State8080 {
   public getCC = () => this.cc;
 
   public getPorts = () => this.ports;
+
+  public getCycles = () => this.cycles;
 
   public setA = (num: number) => {
     this.a = num & 0xff;
@@ -108,5 +113,9 @@ export default class State8080 {
 
   public setPC = (val: number) => {
     this.pc = val & 0xffff;
+  };
+
+  public setCycles = (val: number) => {
+    this.cycles = val;
   };
 }
