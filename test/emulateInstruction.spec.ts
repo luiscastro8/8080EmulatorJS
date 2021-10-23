@@ -24,4 +24,16 @@ describe("emulate instructions", () => {
     expect(state.getPC()).toBe(pc + 1);
     expect(state.getCycles()).toBe(cycles - 4);
   });
+
+  test("0xc3", () => {
+    const cycles = state.getCycles();
+    state.getMemory()[state.getPC()] = 0xc3;
+    state.getMemory()[state.getPC() + 1] = 0x21;
+    state.getMemory()[state.getPC() + 2] = 0x20;
+
+    emulateInstruction(state);
+
+    expect(state.getPC()).toBe(0x2021);
+    expect(state.getCycles()).toBe(cycles - 10);
+  });
 });

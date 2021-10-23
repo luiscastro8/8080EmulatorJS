@@ -11,7 +11,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "no-bitwise": ["error", { allow: ["&"] }],
+    "no-bitwise": ["error", { allow: ["&", "|", "<<"] }],
     "import/extensions": ["error", "ignorePackages", { ts: "never" }],
   },
 };
