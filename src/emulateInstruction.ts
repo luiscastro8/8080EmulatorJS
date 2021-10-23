@@ -9,7 +9,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     default: {
-      throw new Error("unknown opcode");
+      throw new Error(`unknown opcode: ${opcode}`);
     }
   }
 };

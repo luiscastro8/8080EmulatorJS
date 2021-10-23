@@ -1,15 +1,15 @@
+import initializeEmulator from "./initializeEmulator";
+
 const canvas = <HTMLCanvasElement>document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const imageData = ctx.createImageData(100, 100);
 
 const fileInput = <HTMLInputElement>document.getElementById("fileinput");
-fileInput.addEventListener("change", (e) => {
+fileInput.addEventListener("change", (event) => {
   const reader = new FileReader();
-  reader.onloadend = () => {
-    // const buffer = new Uint8Array(<ArrayBuffer>reader.result);
-    // console.log(buffer);
-  };
-  const file = (<HTMLInputElement>e.target).files[0];
+  reader.onloadend = initializeEmulator;
+
+  const file = (<HTMLInputElement>event.target).files[0];
   reader.readAsArrayBuffer(file);
 });
 
