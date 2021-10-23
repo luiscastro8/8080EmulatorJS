@@ -30,6 +30,12 @@ export default class State8080 {
 
   private cycles: number;
 
+  private interruptPointer: number; // 16 bit
+
+  private shift: number; // 16 bit
+
+  private shiftAmount: number; // 8 bit
+
   constructor() {
     this.a = 0;
     this.b = 0;
@@ -45,6 +51,9 @@ export default class State8080 {
     this.cc = new ConditionCodes();
     this.ports = new Ports();
     this.cycles = 16667;
+    this.interruptPointer = 0x10;
+    this.shift = 0;
+    this.shiftAmount = 0;
   }
 
   public getA = () => this.a;
@@ -74,6 +83,12 @@ export default class State8080 {
   public getPorts = () => this.ports;
 
   public getCycles = () => this.cycles;
+
+  public getInterruptPointer = () => this.interruptPointer;
+
+  public getShift = () => this.shift;
+
+  public getShiftAmount = () => this.shiftAmount;
 
   public setA = (num: number) => {
     this.a = num & 0xff;
@@ -117,5 +132,17 @@ export default class State8080 {
 
   public setCycles = (val: number) => {
     this.cycles = val;
+  };
+
+  public setInterruptPointer = (val: number) => {
+    this.interruptPointer = val & 0xffff;
+  };
+
+  public setShift = (val: number) => {
+    this.shift = val & 0xffff;
+  };
+
+  public setShiftAmount = (val: number) => {
+    this.shiftAmount = val & 0xff;
   };
 }

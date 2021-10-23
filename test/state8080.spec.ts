@@ -114,4 +114,22 @@ describe("state8080", () => {
     state.setCycles(1);
     expect(state.getCycles()).toBe(1);
   });
+
+  test("interrupt pointer", () => {
+    expect(state.getInterruptPointer()).toBe(0x10);
+    state.setInterruptPointer(0x10001);
+    expect(state.getInterruptPointer()).toBe(1);
+  });
+
+  test("shift", () => {
+    expect(state.getShift()).toBe(0);
+    state.setShift(0x10001);
+    expect(state.getShift()).toBe(1);
+  });
+
+  test("shift amount", () => {
+    expect(state.getShiftAmount()).toBe(0);
+    state.setShiftAmount(0x101);
+    expect(state.getShiftAmount()).toBe(1);
+  });
 });
