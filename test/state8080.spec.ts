@@ -10,11 +10,11 @@ describe("state8080", () => {
   });
 
   test("a register", () => {
-    expect(state.getA()).toBe(0);
-    state.setA(255);
-    expect(state.getA()).toBe(255);
-    state.setA(257);
-    expect(state.getA()).toBe(1);
+    expect(state.a).toBe(0);
+    state.a = 255;
+    expect(state.a).toBe(255);
+    state.a = 257;
+    expect(state.a).toBe(1);
   });
 
   test("b register", () => {

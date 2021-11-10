@@ -2,7 +2,7 @@ import ConditionCodes from "./condition-codes";
 import Ports from "./ports";
 
 export default class State8080 {
-  private a: number; // 8 bit
+  private privateA: number = 0; // 8 bit
 
   private b: number; // 8 bit
 
@@ -37,7 +37,6 @@ export default class State8080 {
   private shiftAmount: number; // 8 bit
 
   constructor() {
-    this.a = 0;
     this.b = 0;
     this.c = 0;
     this.d = 0;
@@ -56,7 +55,9 @@ export default class State8080 {
     this.shiftAmount = 0;
   }
 
-  public getA = () => this.a;
+  public get a() {
+    return this.privateA;
+  }
 
   public getB = () => this.b;
 
@@ -90,9 +91,9 @@ export default class State8080 {
 
   public getShiftAmount = () => this.shiftAmount;
 
-  public setA = (num: number) => {
-    this.a = num & 0xff;
-  };
+  public set a(val: number) {
+    this.privateA = val & 0xff;
+  }
 
   public setB = (num: number) => {
     this.b = num & 0xff;
