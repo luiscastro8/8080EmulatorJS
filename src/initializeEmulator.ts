@@ -6,7 +6,7 @@ const initializeEmulator = (loadFileEvent: ProgressEvent<FileReader>) => {
   const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
   const state = new State8080();
   for (let i = 0; i < romBuffer.length; i += 1) {
-    state.getMemory()[i] = romBuffer[i];
+    state.memory[i] = romBuffer[i];
   }
   emulateInstruction(state);
   emulateInstruction(state);

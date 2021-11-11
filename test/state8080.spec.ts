@@ -66,70 +66,70 @@ describe("state8080", () => {
   });
 
   test("enable interrupt", () => {
-    expect(state.getEnableInterrupt()).toBe(false);
-    state.setEnableInterrupt(true);
-    expect(state.getEnableInterrupt()).toBe(true);
+    expect(state.enableInterrupt).toBe(false);
+    state.enableInterrupt = true;
+    expect(state.enableInterrupt).toBe(true);
   });
 
   test("stack pointer", () => {
-    expect(state.getSP()).toBe(0xf000);
-    state.setSP(0xffff);
-    expect(state.getSP()).toBe(0xffff);
-    state.setSP(0xf0000);
-    expect(state.getSP()).toBe(0);
+    expect(state.sp).toBe(0xf000);
+    state.sp = 0xffff;
+    expect(state.sp).toBe(0xffff);
+    state.sp = 0xf0000;
+    expect(state.sp).toBe(0);
   });
 
   test("program counter", () => {
-    expect(state.getPC()).toBe(0);
-    state.setPC(0xffff);
-    expect(state.getPC()).toBe(0xffff);
-    state.setPC(0xf0001);
-    expect(state.getPC()).toBe(1);
+    expect(state.pc).toBe(0);
+    state.pc = 0xffff;
+    expect(state.pc).toBe(0xffff);
+    state.pc = 0xf0001;
+    expect(state.pc).toBe(1);
   });
 
   test("memory", () => {
-    expect(state.getMemory()).toHaveLength(0xffff);
-    state.getMemory()[0] = 255;
-    expect(state.getMemory()[0]).toBe(255);
-    state.getMemory()[1] = 257;
-    expect(state.getMemory()[1]).toBe(1);
+    expect(state.memory).toHaveLength(0xffff);
+    state.memory[0] = 255;
+    expect(state.memory[0]).toBe(255);
+    state.memory[1] = 257;
+    expect(state.memory[1]).toBe(1);
   });
 
   test("condition codes", () => {
-    expect(state.getCC()).toBeInstanceOf(ConditionCodes);
-    expect(state.getCC().ac).toBe(false);
-    state.getCC().ac = true;
-    expect(state.getCC().ac).toBe(true);
+    expect(state.cc).toBeInstanceOf(ConditionCodes);
+    expect(state.cc.ac).toBe(false);
+    state.cc.ac = true;
+    expect(state.cc.ac).toBe(true);
   });
 
   test("ports", () => {
-    expect(state.getPorts()).toBeInstanceOf(Ports);
-    expect(state.getPorts().getR0()).toBe(0);
-    state.getPorts().setR0(1);
-    expect(state.getPorts().getR0()).toBe(1);
+    expect(state.ports).toBeInstanceOf(Ports);
+    expect(state.ports.getR0()).toBe(0);
+    state.ports.setR0(1);
+    expect(state.ports.getR0()).toBe(1);
   });
 
   test("cycles", () => {
-    expect(state.getCycles()).toBe(16667);
-    state.setCycles(1);
-    expect(state.getCycles()).toBe(1);
+    expect(state.cycles).toBe(16667);
+    state.cycles = 1;
+    expect(state.cycles).toBe(1);
   });
 
   test("interrupt pointer", () => {
-    expect(state.getInterruptPointer()).toBe(0x10);
-    state.setInterruptPointer(0x10001);
-    expect(state.getInterruptPointer()).toBe(1);
+    expect(state.interruptPointer).toBe(0x10);
+    state.interruptPointer = 0x10001;
+    expect(state.interruptPointer).toBe(1);
   });
 
   test("shift", () => {
-    expect(state.getShift()).toBe(0);
-    state.setShift(0x10001);
-    expect(state.getShift()).toBe(1);
+    expect(state.shift).toBe(0);
+    state.shift = 0x10001;
+    expect(state.shift).toBe(1);
   });
 
   test("shift amount", () => {
-    expect(state.getShiftAmount()).toBe(0);
-    state.setShiftAmount(0x101);
-    expect(state.getShiftAmount()).toBe(1);
+    expect(state.shiftAmount).toBe(0);
+    state.shiftAmount = 0x101;
+    expect(state.shiftAmount).toBe(1);
   });
 });

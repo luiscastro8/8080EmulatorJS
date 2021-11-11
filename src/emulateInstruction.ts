@@ -1,17 +1,18 @@
 import State8080 from "./state8080";
 
+/* eslint-disable no-param-reassign */
 const emulateInstruction = (state: State8080) => {
-  const instruction = state.getMemory().slice(state.getPC(), state.getPC() + 3);
+  const instruction = state.memory.slice(state.pc, state.pc + 3);
   const opcode = instruction[0];
   switch (opcode) {
     case 0x00: {
-      state.setPC(state.getPC() + 1);
-      state.setCycles(state.getCycles() - 4);
+      state.pc += 1;
+      state.cycles -= 4;
       break;
     }
     case 0xc3: {
-      state.setPC((instruction[2] << 8) | instruction[1]);
-      state.setCycles(state.getCycles() - 10);
+      state.pc = (instruction[2] << 8) | instruction[1];
+      state.cycles -= 10;
       break;
     }
     default: {
@@ -19,5 +20,6 @@ const emulateInstruction = (state: State8080) => {
     }
   }
 };
+/* eslint-enable no-param-reassign */
 
 export default emulateInstruction;

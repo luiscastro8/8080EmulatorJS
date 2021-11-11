@@ -64,25 +64,45 @@ export default class State8080 {
     return this.privateL;
   }
 
-  public getEnableInterrupt = () => this.privateEnableInterrupt;
+  public get enableInterrupt() {
+    return this.privateEnableInterrupt;
+  }
 
-  public getSP = () => this.privateSP;
+  public get sp() {
+    return this.privateSP;
+  }
 
-  public getPC = () => this.privatePC;
+  public get pc() {
+    return this.privatePC;
+  }
 
-  public getMemory = () => this.privateMemory;
+  public get memory() {
+    return this.privateMemory;
+  }
 
-  public getCC = () => this.privateCC;
+  public get cc() {
+    return this.privateCC;
+  }
 
-  public getPorts = () => this.privatePorts;
+  public get ports() {
+    return this.privatePorts;
+  }
 
-  public getCycles = () => this.privateCycles;
+  public get cycles() {
+    return this.privateCycles;
+  }
 
-  public getInterruptPointer = () => this.privateInterruptPointer;
+  public get interruptPointer() {
+    return this.privateInterruptPointer;
+  }
 
-  public getShift = () => this.privateShift;
+  public get shift() {
+    return this.privateShift;
+  }
 
-  public getShiftAmount = () => this.privateShiftAmount;
+  public get shiftAmount() {
+    return this.privateShiftAmount;
+  }
 
   public set a(val: number) {
     this.privateA = val & 0xff;
@@ -112,31 +132,31 @@ export default class State8080 {
     this.privateL = val & 0xff;
   }
 
-  public setEnableInterrupt = (val: boolean) => {
+  public set enableInterrupt(val: boolean) {
     this.privateEnableInterrupt = val;
-  };
+  }
 
-  public setSP = (val: number) => {
+  public set sp(val: number) {
     this.privateSP = val & 0xffff;
-  };
+  }
 
-  public setPC = (val: number) => {
+  public set pc(val: number) {
     this.privatePC = val & 0xffff;
-  };
+  }
 
-  public setCycles = (val: number) => {
+  public set cycles(val: number) {
     this.privateCycles = val;
-  };
+  }
 
-  public setInterruptPointer = (val: number) => {
+  public set interruptPointer(val: number) {
     this.privateInterruptPointer = val & 0xffff;
-  };
+  }
 
-  public setShift = (val: number) => {
+  public set shift(val: number) {
     this.privateShift = val & 0xffff;
-  };
+  }
 
-  public setShiftAmount = (val: number) => {
+  public set shiftAmount(val: number) {
     this.privateShiftAmount = val & 0xff;
-  };
+  }
 }
