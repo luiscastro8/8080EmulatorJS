@@ -16,38 +16,25 @@ export default class State8080 {
 
   private privateL: number = 0; // 8 bit
 
-  private enableInterrupt: boolean;
+  private privateEnableInterrupt: boolean = false;
 
-  private sp: number; // 16 bit
+  private privateSP: number = 0xf000; // 16 bit
 
-  private pc: number; // 16 bit
+  private privatePC: number = 0; // 16 bit
 
-  private memory: Uint8Array;
+  private privateMemory: Uint8Array = new Uint8Array(0xffff);
 
-  private cc: ConditionCodes;
+  private privateCC: ConditionCodes = new ConditionCodes();
 
-  private ports: Ports;
+  private privatePorts: Ports = new Ports();
 
-  private cycles: number;
+  private privateCycles: number = 16667;
 
-  private interruptPointer: number; // 16 bit
+  private privateInterruptPointer: number = 0x10; // 16 bit
 
-  private shift: number; // 16 bit
+  private privateShift: number = 0; // 16 bit
 
-  private shiftAmount: number; // 8 bit
-
-  constructor() {
-    this.enableInterrupt = false;
-    this.sp = 0xf000;
-    this.pc = 0;
-    this.memory = new Uint8Array(0xffff);
-    this.cc = new ConditionCodes();
-    this.ports = new Ports();
-    this.cycles = 16667;
-    this.interruptPointer = 0x10;
-    this.shift = 0;
-    this.shiftAmount = 0;
-  }
+  private privateShiftAmount: number = 0; // 8 bit
 
   public get a() {
     return this.privateA;
@@ -77,25 +64,25 @@ export default class State8080 {
     return this.privateL;
   }
 
-  public getEnableInterrupt = () => this.enableInterrupt;
+  public getEnableInterrupt = () => this.privateEnableInterrupt;
 
-  public getSP = () => this.sp;
+  public getSP = () => this.privateSP;
 
-  public getPC = () => this.pc;
+  public getPC = () => this.privatePC;
 
-  public getMemory = () => this.memory;
+  public getMemory = () => this.privateMemory;
 
-  public getCC = () => this.cc;
+  public getCC = () => this.privateCC;
 
-  public getPorts = () => this.ports;
+  public getPorts = () => this.privatePorts;
 
-  public getCycles = () => this.cycles;
+  public getCycles = () => this.privateCycles;
 
-  public getInterruptPointer = () => this.interruptPointer;
+  public getInterruptPointer = () => this.privateInterruptPointer;
 
-  public getShift = () => this.shift;
+  public getShift = () => this.privateShift;
 
-  public getShiftAmount = () => this.shiftAmount;
+  public getShiftAmount = () => this.privateShiftAmount;
 
   public set a(val: number) {
     this.privateA = val & 0xff;
@@ -126,30 +113,30 @@ export default class State8080 {
   }
 
   public setEnableInterrupt = (val: boolean) => {
-    this.enableInterrupt = val;
+    this.privateEnableInterrupt = val;
   };
 
   public setSP = (val: number) => {
-    this.sp = val & 0xffff;
+    this.privateSP = val & 0xffff;
   };
 
   public setPC = (val: number) => {
-    this.pc = val & 0xffff;
+    this.privatePC = val & 0xffff;
   };
 
   public setCycles = (val: number) => {
-    this.cycles = val;
+    this.privateCycles = val;
   };
 
   public setInterruptPointer = (val: number) => {
-    this.interruptPointer = val & 0xffff;
+    this.privateInterruptPointer = val & 0xffff;
   };
 
   public setShift = (val: number) => {
-    this.shift = val & 0xffff;
+    this.privateShift = val & 0xffff;
   };
 
   public setShiftAmount = (val: number) => {
-    this.shiftAmount = val & 0xff;
+    this.privateShiftAmount = val & 0xff;
   };
 }
