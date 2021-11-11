@@ -18,51 +18,51 @@ describe("state8080", () => {
   });
 
   test("b register", () => {
-    expect(state.getB()).toBe(0);
-    state.setB(255);
-    expect(state.getB()).toBe(255);
-    state.setB(257);
-    expect(state.getB()).toBe(1);
+    expect(state.b).toBe(0);
+    state.b = 255;
+    expect(state.b).toBe(255);
+    state.b = 257;
+    expect(state.b).toBe(1);
   });
 
   test("c register", () => {
-    expect(state.getC()).toBe(0);
-    state.setC(255);
-    expect(state.getC()).toBe(255);
-    state.setC(257);
-    expect(state.getC()).toBe(1);
+    expect(state.c).toBe(0);
+    state.c = 255;
+    expect(state.c).toBe(255);
+    state.c = 257;
+    expect(state.c).toBe(1);
   });
 
   test("d register", () => {
-    expect(state.getD()).toBe(0);
-    state.setD(255);
-    expect(state.getD()).toBe(255);
-    state.setD(257);
-    expect(state.getD()).toBe(1);
+    expect(state.d).toBe(0);
+    state.d = 255;
+    expect(state.d).toBe(255);
+    state.d = 257;
+    expect(state.d).toBe(1);
   });
 
   test("e register", () => {
-    expect(state.getE()).toBe(0);
-    state.setE(255);
-    expect(state.getE()).toBe(255);
-    state.setE(257);
-    expect(state.getE()).toBe(1);
+    expect(state.e).toBe(0);
+    state.e = 255;
+    expect(state.e).toBe(255);
+    state.e = 257;
+    expect(state.e).toBe(1);
   });
 
   test("h register", () => {
-    expect(state.getH()).toBe(0);
-    state.setH(255);
-    expect(state.getH()).toBe(255);
-    state.setH(257);
-    expect(state.getH()).toBe(1);
+    expect(state.h).toBe(0);
+    state.h = 255;
+    expect(state.h).toBe(255);
+    state.h = 257;
+    expect(state.h).toBe(1);
   });
 
   test("l register", () => {
-    expect(state.getL()).toBe(0);
-    state.setL(255);
-    expect(state.getL()).toBe(255);
-    state.setL(257);
-    expect(state.getL()).toBe(1);
+    expect(state.l).toBe(0);
+    state.l = 255;
+    expect(state.l).toBe(255);
+    state.l = 257;
+    expect(state.l).toBe(1);
   });
 
   test("enable interrupt", () => {

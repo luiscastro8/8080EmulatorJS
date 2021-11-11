@@ -4,17 +4,17 @@ import Ports from "./ports";
 export default class State8080 {
   private privateA: number = 0; // 8 bit
 
-  private b: number; // 8 bit
+  private privateB: number = 0; // 8 bit
 
-  private c: number; // 8 bit
+  private privateC: number = 0; // 8 bit
 
-  private d: number; // 8 bit
+  private privateD: number = 0; // 8 bit
 
-  private e: number; // 8 bit
+  private privateE: number = 0; // 8 bit
 
-  private h: number; // 8 bit
+  private privateH: number = 0; // 8 bit
 
-  private l: number; // 8 bit
+  private privateL: number = 0; // 8 bit
 
   private enableInterrupt: boolean;
 
@@ -37,12 +37,6 @@ export default class State8080 {
   private shiftAmount: number; // 8 bit
 
   constructor() {
-    this.b = 0;
-    this.c = 0;
-    this.d = 0;
-    this.e = 0;
-    this.h = 0;
-    this.l = 0;
     this.enableInterrupt = false;
     this.sp = 0xf000;
     this.pc = 0;
@@ -59,17 +53,29 @@ export default class State8080 {
     return this.privateA;
   }
 
-  public getB = () => this.b;
+  public get b() {
+    return this.privateB;
+  }
 
-  public getC = () => this.c;
+  public get c() {
+    return this.privateC;
+  }
 
-  public getD = () => this.d;
+  public get d() {
+    return this.privateD;
+  }
 
-  public getE = () => this.e;
+  public get e() {
+    return this.privateE;
+  }
 
-  public getH = () => this.h;
+  public get h() {
+    return this.privateH;
+  }
 
-  public getL = () => this.l;
+  public get l() {
+    return this.privateL;
+  }
 
   public getEnableInterrupt = () => this.enableInterrupt;
 
@@ -95,29 +101,29 @@ export default class State8080 {
     this.privateA = val & 0xff;
   }
 
-  public setB = (num: number) => {
-    this.b = num & 0xff;
-  };
+  public set b(val: number) {
+    this.privateB = val & 0xff;
+  }
 
-  public setC = (num: number) => {
-    this.c = num & 0xff;
-  };
+  public set c(val: number) {
+    this.privateC = val & 0xff;
+  }
 
-  public setD = (num: number) => {
-    this.d = num & 0xff;
-  };
+  public set d(val: number) {
+    this.privateD = val & 0xff;
+  }
 
-  public setE = (num: number) => {
-    this.e = num & 0xff;
-  };
+  public set e(val: number) {
+    this.privateE = val & 0xff;
+  }
 
-  public setH = (num: number) => {
-    this.h = num & 0xff;
-  };
+  public set h(val: number) {
+    this.privateH = val & 0xff;
+  }
 
-  public setL = (num: number) => {
-    this.l = num & 0xff;
-  };
+  public set l(val: number) {
+    this.privateL = val & 0xff;
+  }
 
   public setEnableInterrupt = (val: boolean) => {
     this.enableInterrupt = val;
