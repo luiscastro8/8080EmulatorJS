@@ -1,49 +1,61 @@
 export default class Ports {
-  private r0: number = 0; // 8 bit
+  private privateR0: number = 0; // 8 bit
 
-  private r1: number = 0; // 8 bit
+  private privateR1: number = 0; // 8 bit
 
-  private r2: number = 0; // 8 bit
+  private privateR2: number = 0; // 8 bit
 
-  private w3: number = 0; // 8 bit
+  private privateW3: number = 0; // 8 bit
 
-  private w5: number = 0; // 8 bit
+  private privateW5: number = 0; // 8 bit
 
-  private w6: number = 0; // 8 bit
+  private privateW6: number = 0; // 8 bit
 
-  public getR0 = () => this.r0;
+  public get r0() {
+    return this.privateR0;
+  }
 
-  public getR1 = () => this.r1;
+  public set r0(val: number) {
+    this.privateR0 = val & 0xff;
+  }
 
-  public getR2 = () => this.r2;
+  public get r1() {
+    return this.privateR1;
+  }
 
-  public getW3 = () => this.w3;
+  public set r1(val: number) {
+    this.privateR1 = val & 0xff;
+  }
 
-  public getW5 = () => this.w5;
+  public get r2() {
+    return this.privateR2;
+  }
 
-  public getW6 = () => this.w6;
+  public set r2(val: number) {
+    this.privateR2 = val & 0xff;
+  }
 
-  public setR0 = (num: number) => {
-    this.r0 = num & 0xff;
-  };
+  public get w3() {
+    return this.privateW3;
+  }
 
-  public setR1 = (num: number) => {
-    this.r1 = num & 0xff;
-  };
+  public set w3(val: number) {
+    this.privateW3 = val & 0xff;
+  }
 
-  public setR2 = (num: number) => {
-    this.r2 = num & 0xff;
-  };
+  public get w5() {
+    return this.privateW5;
+  }
 
-  public setW3 = (num: number) => {
-    this.w3 = num & 0xff;
-  };
+  public set w5(val: number) {
+    this.privateW5 = val & 0xff;
+  }
 
-  public setW5 = (num: number) => {
-    this.w5 = num & 0xff;
-  };
+  public get w6() {
+    return this.privateW6;
+  }
 
-  public setW6 = (num: number) => {
-    this.w6 = num & 0xff;
-  };
+  public set w6(val: number) {
+    this.privateW6 = val & 0xff;
+  }
 }

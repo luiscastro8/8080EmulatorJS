@@ -104,9 +104,9 @@ describe("state8080", () => {
 
   test("ports", () => {
     expect(state.ports).toBeInstanceOf(Ports);
-    expect(state.ports.getR0()).toBe(0);
-    state.ports.setR0(1);
-    expect(state.ports.getR0()).toBe(1);
+    expect(state.ports.r0).toBe(0);
+    state.ports.r0 = 1;
+    expect(state.ports.r0).toBe(1);
   });
 
   test("cycles", () => {
