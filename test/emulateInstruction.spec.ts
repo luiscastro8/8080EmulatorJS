@@ -1,5 +1,6 @@
 import emulateInstruction from "../src/emulateInstruction";
 import State8080 from "../src/state8080";
+import { testInstruction } from "./emulateInstructionUtils";
 
 describe("emulate instructions", () => {
   let state: State8080;
@@ -9,113 +10,92 @@ describe("emulate instructions", () => {
 
   test("unknown opcode", () => {
     state.memory[state.pc] = 0xfd;
-
     expect(() => emulateInstruction(state)).toThrowError();
   });
 
   test("0x00", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x00;
-
-    emulateInstruction(state);
-
-    expect(state.pc).toBe(pc + 1);
-    expect(state.cycles).toBe(cycles - 4);
+    testInstruction(state, 0x00, 1, 4);
   });
 
   test("0x01", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x01;
-    state.memory[state.pc + 1] = 0x20;
-    state.memory[state.pc + 2] = 0x21;
-
-    emulateInstruction(state);
-
-    expect(state.b).toBe(0x21);
-    expect(state.c).toBe(0x20);
-    expect(state.pc).toBe(pc + 3);
-    expect(state.cycles).toBe(cycles - 10);
+    const before = () => {
+      state.memory[state.pc + 1] = 0x20;
+      state.memory[state.pc + 2] = 0x21;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x21);
+      expect(state.c).toBe(0x20);
+    };
+    testInstruction(state, 0x01, 3, 10, before, after);
   });
 
   test("0x06", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x06;
-    state.memory[state.pc + 1] = 0x69;
-
-    emulateInstruction(state);
-
-    expect(state.b).toBe(0x69);
-    expect(state.pc).toBe(pc + 2);
-    expect(state.cycles).toBe(cycles - 7);
+    const before = () => {
+      state.memory[state.pc + 1] = 0x69;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x69);
+    };
+    testInstruction(state, 0x06, 2, 7, before, after);
   });
 
   test("0x0a", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x0a;
-    state.b = 0x31;
-    state.c = 0x32;
-    state.memory[0x3132] = 0x33;
-
-    emulateInstruction(state);
-
-    expect(state.pc).toBe(pc + 1);
-    expect(state.cycles).toBe(cycles - 7);
-    expect(state.a).toBe(0x33);
+    const before = () => {
+      state.b = 0x31;
+      state.c = 0x32;
+      state.memory[0x3132] = 0x33;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x33);
+    };
+    testInstruction(state, 0x0a, 1, 7, before, after);
   });
 
   test("0x11", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x11;
-    state.memory[state.pc + 1] = 0x20;
-    state.memory[state.pc + 2] = 0x21;
-
-    emulateInstruction(state);
-
-    expect(state.d).toBe(0x21);
-    expect(state.e).toBe(0x20);
-    expect(state.pc).toBe(pc + 3);
-    expect(state.cycles).toBe(cycles - 10);
+    const before = () => {
+      state.memory[state.pc + 1] = 0x20;
+      state.memory[state.pc + 2] = 0x21;
+    };
+    const after = () => {
+      expect(state.d).toBe(0x21);
+      expect(state.e).toBe(0x20);
+    };
+    testInstruction(state, 0x11, 3, 10, before, after);
   });
 
   test("0x1a", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x1a;
-    state.d = 0x31;
-    state.e = 0x32;
-    state.memory[0x3132] = 0x33;
-
-    emulateInstruction(state);
-
-    expect(state.pc).toBe(pc + 1);
-    expect(state.cycles).toBe(cycles - 7);
-    expect(state.a).toBe(0x33);
+    const before = () => {
+      state.d = 0x31;
+      state.e = 0x32;
+      state.memory[0x3132] = 0x33;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x33);
+    };
+    testInstruction(state, 0x1a, 1, 7, before, after);
   });
 
   test("0x21", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x21;
-    state.memory[state.pc + 1] = 0x20;
-    state.memory[state.pc + 2] = 0x21;
-
-    emulateInstruction(state);
-
-    expect(state.h).toBe(0x21);
-    expect(state.l).toBe(0x20);
-    expect(state.pc).toBe(pc + 3);
-    expect(state.cycles).toBe(cycles - 10);
+    const before = () => {
+      state.memory[state.pc + 1] = 0x20;
+      state.memory[state.pc + 2] = 0x21;
+    };
+    const after = () => {
+      expect(state.h).toBe(0x21);
+      expect(state.l).toBe(0x20);
+    };
+    testInstruction(state, 0x21, 3, 10, before, after);
   });
 
   test("0x31", () => {
-    const { pc, cycles } = state;
-    state.memory[state.pc] = 0x31;
-    state.memory[state.pc + 1] = 0x21;
-    state.memory[state.pc + 2] = 0x20;
-
-    emulateInstruction(state);
-
-    expect(state.pc).toBe(pc + 3);
-    expect(state.cycles).toBe(cycles - 10);
-    expect(state.sp).toBe(0x2021);
+    const before = () => {
+      state.memory[state.pc + 1] = 0x21;
+      state.memory[state.pc + 2] = 0x20;
+    };
+    const after = () => {
+      expect(state.sp).toBe(0x2021);
+    };
+    testInstruction(state, 0x31, 3, 10, before, after);
   });
 
   test("0xc3", () => {
