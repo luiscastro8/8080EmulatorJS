@@ -4,8 +4,6 @@ import State8080 from "./state8080";
 const emulateInstruction = (state: State8080) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
   const opcode = instruction[0];
-  /* eslint-disable-next-line */
-  console.log(`emulating instruction 0x${Number(opcode).toString(16)}`);
   switch (opcode) {
     case 0x00: {
       state.pc += 1;

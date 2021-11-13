@@ -10,6 +10,8 @@ const initializeEmulator = (loadFileEvent: ProgressEvent<FileReader>) => {
   }
 
   for (let i = 0; i < 100; i += 1) {
+    /* eslint-disable-next-line */
+    console.log(`${i}: emulating instruction 0x${Number(state.memory[state.pc]).toString(16)}`);
     emulateInstruction(state);
   }
 };
