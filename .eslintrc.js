@@ -20,5 +20,6 @@ module.exports = {
   rules: {
     "no-bitwise": ["error", { allow: ["&", "|", "<<", ">>"] }],
     "prefer-destructuring": ["error", { object: true, array: false }],
+    "no-param-reassign": "off",
   },
 };
