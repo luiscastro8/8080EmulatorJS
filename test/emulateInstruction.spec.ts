@@ -49,6 +49,20 @@ describe("emulate instructions", () => {
     expect(state.cycles).toBe(cycles - 7);
   });
 
+  test("0x0a", () => {
+    const { pc, cycles } = state;
+    state.memory[state.pc] = 0x0a;
+    state.b = 0x31;
+    state.c = 0x32;
+    state.memory[0x3132] = 0x33;
+
+    emulateInstruction(state);
+
+    expect(state.pc).toBe(pc + 1);
+    expect(state.cycles).toBe(cycles - 7);
+    expect(state.a).toBe(0x33);
+  });
+
   test("0x11", () => {
     const { pc, cycles } = state;
     state.memory[state.pc] = 0x11;
@@ -61,6 +75,20 @@ describe("emulate instructions", () => {
     expect(state.e).toBe(0x20);
     expect(state.pc).toBe(pc + 3);
     expect(state.cycles).toBe(cycles - 10);
+  });
+
+  test("0x1a", () => {
+    const { pc, cycles } = state;
+    state.memory[state.pc] = 0x1a;
+    state.d = 0x31;
+    state.e = 0x32;
+    state.memory[0x3132] = 0x33;
+
+    emulateInstruction(state);
+
+    expect(state.pc).toBe(pc + 1);
+    expect(state.cycles).toBe(cycles - 7);
+    expect(state.a).toBe(0x33);
   });
 
   test("0x21", () => {
