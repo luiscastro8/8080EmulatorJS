@@ -18,6 +18,13 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0x11: {
+      state.d = instruction[2];
+      state.e = instruction[1];
+      state.pc += 3;
+      state.cycles -= 10;
+      break;
+    }
     case 0x31: {
       state.sp = (instruction[2] << 8) | instruction[1];
       state.pc += 3;
@@ -27,6 +34,15 @@ const emulateInstruction = (state: State8080) => {
     case 0xc3: {
       state.pc = (instruction[2] << 8) | instruction[1];
       state.cycles -= 10;
+      break;
+    }
+    case 0xcd: {
+      const returnAddress = state.pc + 3;
+      state.memory[state.sp - 1] = returnAddress >> 8;
+      state.memory[state.sp - 2] = returnAddress & 0xff;
+      state.sp -= 2;
+      state.pc = (instruction[2] << 8) | instruction[1];
+      state.cycles -= 17;
       break;
     }
     default: {

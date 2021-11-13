@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "jest"],
   rules: {
-    "no-bitwise": ["error", { allow: ["&", "|", "<<"] }],
+    "no-bitwise": ["error", { allow: ["&", "|", "<<", ">>"] }],
     "prefer-destructuring": ["error", { object: true, array: false }],
     "import/extensions": ["error", "ignorePackages", { ts: "never" }],
   },
