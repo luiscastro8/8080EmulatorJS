@@ -9,7 +9,8 @@
     "build": "webpack",
     "lint": "eslint src test --ext .ts",
     "prettier": "prettier . --write",
-    "test": "jest"
+    "test": "jest",
+    "full": "yarn lint && yarn prettier && yarn test && yarn build && echo LGTM!"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
