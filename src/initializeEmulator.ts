@@ -8,10 +8,10 @@ const initializeEmulator = (loadFileEvent: ProgressEvent<FileReader>) => {
   for (let i = 0; i < romBuffer.length; i += 1) {
     state.memory[i] = romBuffer[i];
   }
-  emulateInstruction(state);
-  emulateInstruction(state);
-  emulateInstruction(state);
-  emulateInstruction(state);
+
+  for (let i = 0; i < 100; i += 1) {
+    emulateInstruction(state);
+  }
 };
 
 export default initializeEmulator;
