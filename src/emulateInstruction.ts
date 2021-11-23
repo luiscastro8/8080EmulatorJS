@@ -15,6 +15,13 @@ const emulateInstruction = (state: State8080) => {
       LXI(state, STATEEnums.B);
       break;
     }
+    case 0x05: {
+      state.b -= 1;
+      // SetFlags(state.b, false, state); TODO
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x06: {
       state.b = instruction[1];
       state.pc += 2;
@@ -29,6 +36,15 @@ const emulateInstruction = (state: State8080) => {
       LXI(state, STATEEnums.D);
       break;
     }
+    case 0x13: {
+      let address = (state.d << 8) | state.e;
+      address += 1;
+      state.d = (address >> 8) & 0xff;
+      state.e = address & 0xff;
+      state.pc += 1;
+      state.cycles -= 6;
+      break;
+    }
     case 0x1a: {
       LDAX(state, STATEEnums.D);
       break;
@@ -37,8 +53,24 @@ const emulateInstruction = (state: State8080) => {
       LXI(state, STATEEnums.H);
       break;
     }
+    case 0x23: {
+      let address = (state.h << 8) | state.l;
+      address += 1;
+      state.h = (address >> 8) & 0xff;
+      state.l = address & 0xff;
+      state.pc += 1;
+      state.cycles -= 6;
+      break;
+    }
     case 0x31: {
       LXI(state, STATEEnums.SP);
+      break;
+    }
+    case 0x77: {
+      const address = (state.h << 8) | state.l;
+      state.memory[address] = state.a;
+      state.pc += 1;
+      state.cycles -= 7;
       break;
     }
     case 0xc3: {
