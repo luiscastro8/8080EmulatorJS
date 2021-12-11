@@ -6,6 +6,7 @@
   "author": "luiscastro8 <ochoad64@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "serve": "serve dist/",
     "build": "webpack",
     "lint": "eslint src test --ext .ts",
     "prettier": "prettier . --write",
