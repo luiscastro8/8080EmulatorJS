@@ -1,4 +1,4 @@
-import ConditionCodes from "../src/condition-codes";
+import ConditionCodes from "../src/conditionCodes";
 
 test("zero flag", () => {
   const cc = new ConditionCodes();

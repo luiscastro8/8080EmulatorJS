@@ -1,4 +1,4 @@
-import ConditionCodes from "./condition-codes";
+import ConditionCodes from "./conditionCodes";
 import Ports from "./ports";
 
 export default class State8080 {

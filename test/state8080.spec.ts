@@ -1,4 +1,4 @@
-import ConditionCodes from "../src/condition-codes";
+import ConditionCodes from "../src/conditionCodes";
 import Ports from "../src/ports";
 import State8080 from "../src/state8080";
 
