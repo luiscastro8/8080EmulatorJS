@@ -74,7 +74,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xc2: {
-      if (state.cc.z) {
+      if (!state.cc.z) {
         state.pc = (instruction[2] << 8) | instruction[1];
         state.cycles -= 15;
       } else {
