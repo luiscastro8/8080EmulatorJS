@@ -155,7 +155,7 @@ describe("emulate instructions", () => {
 
     expect(state.pc).toBe(0x2021);
     expect(state.cycles).toBe(cycles - 15);
-  })
+  });
 
   test("0xc2 if not zero", () => {
     const { cycles, pc } = state;
@@ -168,7 +168,7 @@ describe("emulate instructions", () => {
 
     expect(state.pc).toBe(pc + 3);
     expect(state.cycles).toBe(cycles - 10);
-  })
+  });
 
   test("0xc3", () => {
     const { cycles } = state;
@@ -180,6 +180,19 @@ describe("emulate instructions", () => {
 
     expect(state.pc).toBe(0x2021);
     expect(state.cycles).toBe(cycles - 10);
+  });
+
+  test("0xc9", () => {
+    const { cycles, sp } = state;
+    state.memory[state.pc] = 0xc9;
+    state.memory[state.sp] = 0x21;
+    state.memory[state.sp + 1] = 0x20;
+
+    emulateInstruction(state);
+
+    expect(state.pc).toBe(0x2021);
+    expect(state.cycles).toBe(cycles - 10);
+    expect(state.sp).toBe(sp + 2);
   });
 
   test("0xcd", () => {

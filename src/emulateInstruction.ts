@@ -88,6 +88,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 10;
       break;
     }
+    case 0xc9: {
+      state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+      state.sp += 2;
+      state.cycles -= 10;
+      break;
+    }
     case 0xcd: {
       const returnAddress = state.pc + 3;
       state.memory[state.sp - 1] = returnAddress >> 8;
