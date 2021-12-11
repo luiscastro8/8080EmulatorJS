@@ -144,6 +144,32 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x77, 1, 7, before, after);
   });
 
+  test("0xc2 if zero", () => {
+    const { cycles } = state;
+    state.memory[state.pc] = 0xc2;
+    state.memory[state.pc + 1] = 0x21;
+    state.memory[state.pc + 2] = 0x20;
+    state.cc.setFlags(0, false);
+
+    emulateInstruction(state);
+
+    expect(state.pc).toBe(0x2021);
+    expect(state.cycles).toBe(cycles - 15);
+  })
+
+  test("0xc2 if not zero", () => {
+    const { cycles, pc } = state;
+    state.memory[state.pc] = 0xc2;
+    state.memory[state.pc + 1] = 0x21;
+    state.memory[state.pc + 2] = 0x20;
+    state.cc.setFlags(1, false);
+
+    emulateInstruction(state);
+
+    expect(state.pc).toBe(pc + 3);
+    expect(state.cycles).toBe(cycles - 10);
+  })
+
   test("0xc3", () => {
     const { cycles } = state;
     state.memory[state.pc] = 0xc3;
