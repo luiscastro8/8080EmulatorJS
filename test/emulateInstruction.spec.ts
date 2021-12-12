@@ -157,15 +157,15 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x77, 1, 7, before, after);
   });
 
-  test('0x7c', () => {
+  test("0x7c", () => {
     const before = () => {
       state.h = 0x20;
-    }
+    };
     const after = () => {
-      expect(state.a).toBe(0x20)
-    }
+      expect(state.a).toBe(0x20);
+    };
     testInstruction(state, 0x7c, 1, 5, before, after);
-  })
+  });
 
   test("0xc2 if zero", () => {
     const { cycles, pc } = state;
@@ -234,10 +234,10 @@ describe("emulate instructions", () => {
     expect(state.cycles).toBe(cycles - 17);
   });
 
-  test('0xfe', () => {
+  test("0xfe", () => {
     const after = () => {
       expect(setFlagsSpy).toBeCalled();
-    }
+    };
     testInstruction(state, 0xfe, 2, 7, undefined, after);
-  })
+  });
 });

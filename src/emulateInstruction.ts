@@ -82,8 +82,8 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x7c: {
       state.a = state.h;
-		state.pc++;
-		state.cycles -= 5;
+      state.pc += 1;
+      state.cycles -= 5;
       break;
     }
     case 0xc2: {
@@ -118,9 +118,9 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xfe: {
       state.cc.setFlags(state.a - instruction[1], true);
-		state.pc += 2;
-		state.cycles -= 7;
-		break;
+      state.pc += 2;
+      state.cycles -= 7;
+      break;
     }
     default: {
       throw new Error(`unknown opcode: 0x${Number(opcode).toString(16)}`);
