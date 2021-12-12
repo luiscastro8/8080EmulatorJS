@@ -4,8 +4,10 @@ import { testInstruction } from "./emulateInstructionUtils";
 
 describe("emulate instructions", () => {
   let state: State8080;
+  let setFlagsSpy: jest.SpyInstance;
   beforeEach(() => {
     state = new State8080();
+    setFlagsSpy = jest.spyOn(state.cc, "setFlags");
   });
 
   test("unknown opcode", () => {
@@ -37,6 +39,7 @@ describe("emulate instructions", () => {
       expect(state.b).toBe(0xff);
     };
     testInstruction(state, 0x05, 1, 5, before, after);
+    expect(setFlagsSpy).toHaveBeenCalled();
   });
 
   test("0x06", () => {
@@ -130,6 +133,16 @@ describe("emulate instructions", () => {
       expect(state.sp).toBe(0x2021);
     };
     testInstruction(state, 0x31, 3, 10, before, after);
+  });
+
+  test("0x36", () => {
+    const before = () => {
+      state.memory[state.pc + 1] = 0x20;
+    };
+    const after = () => {
+      expect(state.memory[(state.h << 8) | state.l]).toBe(0x20);
+    };
+    testInstruction(state, 0x36, 2, 10, before, after);
   });
 
   test("0x77", () => {

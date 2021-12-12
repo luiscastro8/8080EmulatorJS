@@ -15,7 +15,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
-  mode: "production",
+  mode: "development",
   plugins: [new HtmlWebpackPlugin({ template: "src/index.html" })],
   output: {
     clean: true,
