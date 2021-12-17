@@ -41,8 +41,8 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
     state.memory[i] = romBuffer[i];
   }
 
-  for (let i = 0; i < 10000; i += 1) {
-    if (i % 10 === 0) {
+  for (let i = 0; i < 100000; i += 1) {
+    if (i > 37300) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${i}: emulating instruction 0x${Number(

@@ -134,6 +134,16 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x23, 1, 6, before, after);
   });
 
+  test("0x26", () => {
+    const before = () => {
+      state.memory[state.pc + 1] = 0x21;
+    };
+    const after = () => {
+      expect(state.h).toBe(0x21);
+    };
+    testInstruction(state, 0x26, 2, 7, before, after);
+  });
+
   test("0x31", () => {
     const before = () => {
       state.memory[state.pc + 1] = 0x21;
@@ -154,6 +164,16 @@ describe("emulate instructions", () => {
     };
     testInstruction(state, 0x36, 2, 10, before, after);
   });
+
+  test("0x6f", () => {
+    const before = () => {
+      state.a = 0x21;
+    }
+    const after = () => {
+      expect(state.l).toBe(0x21);
+    }
+    testInstruction(state, 0x6f, 1, 5, before, after);
+  })
 
   test("0x77", () => {
     const before = () => {

@@ -68,6 +68,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 6;
       break;
     }
+    case 0x26: {
+      state.h = instruction[1];
+      state.pc += 2;
+      state.cycles -= 7;
+      break;
+    }
     case 0x31: {
       LXI(state, STATEEnums.SP);
       break;
@@ -78,6 +84,12 @@ const emulateInstruction = (state: State8080) => {
       state.pc += 2;
       state.cycles -= 10;
       break;
+    }
+    case 0x6f: {
+      state.l = state.a;
+		state.pc++;
+		state.cycles -= 5;
+		break;
     }
     case 0x77: {
       const address = (state.h << 8) | state.l;
