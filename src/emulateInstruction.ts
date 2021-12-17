@@ -1,4 +1,4 @@
-import { LDAX, LXI, STATEEnums } from "./repeatableInstuctions";
+import { LDAX, LXI, PUSH, STATEEnums } from "./repeatableInstuctions";
 import State8080 from "./state8080";
 
 /* eslint-disable no-param-reassign */
@@ -30,6 +30,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x0a: {
       LDAX(state, STATEEnums.B);
+      break;
+    }
+    case 0x0e: {
+      state.c = instruction[1];
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0x11: {
@@ -114,6 +120,14 @@ const emulateInstruction = (state: State8080) => {
       state.sp -= 2;
       state.pc = (instruction[2] << 8) | instruction[1];
       state.cycles -= 17;
+      break;
+    }
+    case 0xd5: {
+      PUSH(state, STATEEnums.D);
+      break;
+    }
+    case 0xe5: {
+      PUSH(state, STATEEnums.H);
       break;
     }
     case 0xfe: {
