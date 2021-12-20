@@ -87,9 +87,9 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x6f: {
       state.l = state.a;
-		state.pc++;
-		state.cycles -= 5;
-		break;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
     }
     case 0x77: {
       const address = (state.h << 8) | state.l;

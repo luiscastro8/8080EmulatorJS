@@ -168,12 +168,12 @@ describe("emulate instructions", () => {
   test("0x6f", () => {
     const before = () => {
       state.a = 0x21;
-    }
+    };
     const after = () => {
       expect(state.l).toBe(0x21);
-    }
+    };
     testInstruction(state, 0x6f, 1, 5, before, after);
-  })
+  });
 
   test("0x77", () => {
     const before = () => {
