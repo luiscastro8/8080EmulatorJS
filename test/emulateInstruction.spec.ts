@@ -356,6 +356,22 @@ describe("emulate instructions", () => {
     testInstruction(state, 0xe5, 1, 11, before, after);
   });
 
+  test("0xeb", () => {
+    const before = () => {
+      state.h = 0x20;
+      state.l = 0x21;
+      state.d = 0x22;
+      state.e = 0x23;
+    };
+    const after = () => {
+      expect(state.h).toBe(0x22);
+      expect(state.l).toBe(0x23);
+      expect(state.d).toBe(0x20);
+      expect(state.e).toBe(0x21);
+    };
+    testInstruction(state, 0xeb, 1, 4, before, after);
+  });
+
   test("0xfe", () => {
     const after = () => {
       expect(setFlagsSpy).toBeCalled();

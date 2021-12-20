@@ -150,6 +150,17 @@ const emulateInstruction = (state: State8080) => {
       PUSH(state, STATEEnums.H);
       break;
     }
+    case 0xeb: {
+      let temp = state.d;
+      state.d = state.h;
+      state.h = temp;
+      temp = state.e;
+      state.e = state.l;
+      state.l = temp;
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0xfe: {
       state.cc.setFlags(state.a - instruction[1], true);
       state.pc += 2;
