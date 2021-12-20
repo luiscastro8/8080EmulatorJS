@@ -7,6 +7,31 @@ export enum STATEEnums {
   SP,
 }
 
+export const DAD = (state: State8080, arg: STATEEnums) => {
+  /* eslint-disable-next-line default-case */
+  switch (arg) {
+    case STATEEnums.D: {
+      const hl = (state.h << 8) | state.l;
+      const de = (state.d << 8) | state.e;
+      const answer = hl + de;
+      state.h = (answer >> 8) & 0xff;
+      state.l = answer & 0xff;
+      state.cc.cy = answer > 0xffff;
+      break;
+    }
+    case STATEEnums.H: {
+      const hl = (state.h << 8) | state.l;
+      const answer = hl * 2;
+      state.h = (answer >> 8) & 0xff;
+      state.l = answer & 0xff;
+      state.cc.cy = answer > 0xff;
+      break;
+    }
+  }
+  state.pc += 1;
+  state.cycles -= 11;
+};
+
 export const LDAX = (state: State8080, arg: STATEEnums) => {
   switch (arg) {
     case STATEEnums.B: {

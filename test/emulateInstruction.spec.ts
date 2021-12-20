@@ -98,6 +98,40 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x13, 1, 6, before, after);
   });
 
+  describe("0x19", () => {
+    test("0x03 + 0x04 = 0x07", () => {
+      const before = () => {
+        state.h = 0x00;
+        state.l = 0x03;
+        state.d = 0x00;
+        state.e = 0x04;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0x00);
+        expect(state.l).toBe(0x07);
+        expect(state.cc.cy).toBe(false);
+      };
+      testInstruction(state, 0x19, 1, 11, before, after);
+    });
+
+    test("0xff + 0xfe & 0xff = 0xfd", () => {
+      const before = () => {
+        state.h = 0xff;
+        state.l = 0xff;
+        state.d = 0xff;
+        state.e = 0xfe;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0xff);
+        expect(state.l).toBe(0xfd);
+        expect(state.cc.cy).toBe(true);
+      };
+      testInstruction(state, 0x19, 1, 11, before, after);
+    });
+  });
+
   test("0x1a", () => {
     const before = () => {
       state.d = 0x31;
@@ -142,6 +176,36 @@ describe("emulate instructions", () => {
       expect(state.h).toBe(0x21);
     };
     testInstruction(state, 0x26, 2, 7, before, after);
+  });
+
+  describe("0x29", () => {
+    test("0x03 + 0x03 = 0x06", () => {
+      const before = () => {
+        state.h = 0x00;
+        state.l = 0x03;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0x00);
+        expect(state.l).toBe(0x06);
+        expect(state.cc.cy).toBe(false);
+      };
+      testInstruction(state, 0x29, 1, 11, before, after);
+    });
+
+    test("0xff + 0xff & 0xff = 0xfe", () => {
+      const before = () => {
+        state.h = 0xff;
+        state.l = 0xff;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0xff);
+        expect(state.l).toBe(0xfe);
+        expect(state.cc.cy).toBe(true);
+      };
+      testInstruction(state, 0x29, 1, 11, before, after);
+    });
   });
 
   test("0x31", () => {
