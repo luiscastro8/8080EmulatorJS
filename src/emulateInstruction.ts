@@ -127,6 +127,10 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 10;
       break;
     }
+    case 0xc5: {
+      PUSH(state, STATEEnums.B);
+      break;
+    }
     case 0xc9: {
       state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
       state.sp += 2;
@@ -142,8 +146,22 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 17;
       break;
     }
+    case 0xd3: {
+      state.writeToPort(instruction[1]);
+      state.pc += 2;
+      state.cycles -= 10;
+      break;
+    }
     case 0xd5: {
       PUSH(state, STATEEnums.D);
+      break;
+    }
+    case 0xe1: {
+      state.l = state.memory[state.sp];
+      state.h = state.memory[state.sp + 1];
+      state.sp += 2;
+      state.pc += 1;
+      state.cycles -= 10;
       break;
     }
     case 0xe5: {

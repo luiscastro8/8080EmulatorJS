@@ -83,6 +83,11 @@ export const LXI = (state: State8080, arg: STATEEnums) => {
 export const PUSH = (state: State8080, arg: STATEEnums) => {
   /* eslint-disable-next-line default-case */
   switch (arg) {
+    case STATEEnums.B: {
+      state.memory[state.sp - 2] = state.c;
+      state.memory[state.sp - 1] = state.b;
+      break;
+    }
     case STATEEnums.D: {
       state.memory[state.sp - 2] = state.e;
       state.memory[state.sp - 1] = state.d;

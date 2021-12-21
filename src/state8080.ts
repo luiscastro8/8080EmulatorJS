@@ -159,4 +159,31 @@ export default class State8080 {
   public set shiftAmount(val: number) {
     this.privateShiftAmount = val & 0xff;
   }
+
+  public writeToPort = (port: number) => {
+    /* eslint-disable-next-line default-case */
+    switch (port) {
+      case 2: {
+        this.shiftAmount = this.a & 0b111;
+        break;
+      }
+      case 3: {
+        this.ports.w3 = this.a;
+        break;
+      }
+      case 4: {
+        this.shift >>= 8;
+        this.shift |= this.a << 8;
+        break;
+      }
+      case 5: {
+        this.ports.w5 = this.a;
+        break;
+      }
+      case 6: {
+        this.ports.w6 = this.a;
+        break;
+      }
+    }
+  };
 }
