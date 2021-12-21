@@ -10,6 +10,15 @@ export enum STATEEnums {
 export const DAD = (state: State8080, arg: STATEEnums) => {
   /* eslint-disable-next-line default-case */
   switch (arg) {
+    case STATEEnums.B: {
+      const hl = (state.h << 8) | state.l;
+      const bc = (state.b << 8) | state.c;
+      const answer = hl + bc;
+      state.h = (answer >> 8) & 0xff;
+      state.l = answer & 0xff;
+      state.cc.cy = answer > 0xffff;
+      break;
+    }
     case STATEEnums.D: {
       const hl = (state.h << 8) | state.l;
       const de = (state.d << 8) | state.e;
@@ -78,6 +87,30 @@ export const LXI = (state: State8080, arg: STATEEnums) => {
   }
   state.pc += 3;
   state.cycles -= 10;
+};
+
+export const POP = (state: State8080, arg: STATEEnums) => {
+  /* eslint-disable-next-line default-case */
+  switch (arg) {
+    case STATEEnums.B: {
+      state.c = state.memory[state.sp];
+      state.b = state.memory[state.sp + 1];
+      break;
+    }
+    case STATEEnums.D: {
+      state.e = state.memory[state.sp];
+      state.d = state.memory[state.sp + 1];
+      break;
+    }
+    case STATEEnums.H: {
+      state.l = state.memory[state.sp];
+      state.h = state.memory[state.sp + 1];
+      break;
+    }
+  }
+  state.pc += 1;
+  state.cycles -= 10;
+  state.sp += 2;
 };
 
 export const PUSH = (state: State8080, arg: STATEEnums) => {

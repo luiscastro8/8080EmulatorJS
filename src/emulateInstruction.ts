@@ -1,4 +1,4 @@
-import { DAD, LDAX, LXI, PUSH, STATEEnums } from "./repeatableInstuctions";
+import { DAD, LDAX, LXI, POP, PUSH, STATEEnums } from "./repeatableInstuctions";
 import State8080 from "./state8080";
 
 /* eslint-disable no-param-reassign */
@@ -26,6 +26,10 @@ const emulateInstruction = (state: State8080) => {
       state.b = instruction[1];
       state.pc += 2;
       state.cycles -= 7;
+      break;
+    }
+    case 0x09: {
+      DAD(state, STATEEnums.B);
       break;
     }
     case 0x0a: {
@@ -112,6 +116,10 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 5;
       break;
     }
+    case 0xc1: {
+      POP(state, STATEEnums.B);
+      break;
+    }
     case 0xc2: {
       if (!state.cc.z) {
         state.pc = (instruction[2] << 8) | instruction[1];
@@ -146,6 +154,10 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 17;
       break;
     }
+    case 0xd1: {
+      POP(state, STATEEnums.D);
+      break;
+    }
     case 0xd3: {
       state.writeToPort(instruction[1]);
       state.pc += 2;
@@ -157,11 +169,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xe1: {
-      state.l = state.memory[state.sp];
-      state.h = state.memory[state.sp + 1];
-      state.sp += 2;
-      state.pc += 1;
-      state.cycles -= 10;
+      POP(state, STATEEnums.H);
       break;
     }
     case 0xe5: {

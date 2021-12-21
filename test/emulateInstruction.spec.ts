@@ -54,6 +54,40 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x06, 2, 7, before, after);
   });
 
+  describe("0x09", () => {
+    test("0x03 + 0x04 = 0x07", () => {
+      const before = () => {
+        state.h = 0x00;
+        state.l = 0x03;
+        state.b = 0x00;
+        state.c = 0x04;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0x00);
+        expect(state.l).toBe(0x07);
+        expect(state.cc.cy).toBe(false);
+      };
+      testInstruction(state, 0x09, 1, 11, before, after);
+    });
+
+    test("0xff + 0xfe & 0xff = 0xfd", () => {
+      const before = () => {
+        state.h = 0xff;
+        state.l = 0xff;
+        state.b = 0xff;
+        state.c = 0xfe;
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(state.h).toBe(0xff);
+        expect(state.l).toBe(0xfd);
+        expect(state.cc.cy).toBe(true);
+      };
+      testInstruction(state, 0x09, 1, 11, before, after);
+    });
+  });
+
   test("0x0a", () => {
     const before = () => {
       state.b = 0x31;
@@ -263,6 +297,20 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x7c, 1, 5, before, after);
   });
 
+  test("0xc1", () => {
+    const { sp } = state;
+    const before = () => {
+      state.memory[state.sp] = 0x20;
+      state.memory[state.sp + 1] = 0x21;
+    };
+    const after = () => {
+      expect(state.sp).toBe(sp + 2);
+      expect(state.c).toBe(0x20);
+      expect(state.b).toBe(0x21);
+    };
+    testInstruction(state, 0xc1, 1, 10, before, after);
+  });
+
   test("0xc2 if zero", () => {
     const { cycles, pc } = state;
     state.memory[state.pc] = 0xc2;
@@ -342,6 +390,20 @@ describe("emulate instructions", () => {
     expect(state.memory[sp - 1]).toBe(0x20);
     expect(state.memory[sp - 2]).toBe(0x21 + 3);
     expect(state.cycles).toBe(cycles - 17);
+  });
+
+  test("0xd1", () => {
+    const { sp } = state;
+    const before = () => {
+      state.memory[state.sp] = 0x20;
+      state.memory[state.sp + 1] = 0x21;
+    };
+    const after = () => {
+      expect(state.sp).toBe(sp + 2);
+      expect(state.e).toBe(0x20);
+      expect(state.d).toBe(0x21);
+    };
+    testInstruction(state, 0xd1, 1, 10, before, after);
   });
 
   test("0xd3", () => {
