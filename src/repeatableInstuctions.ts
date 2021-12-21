@@ -41,6 +41,19 @@ export const DAD = (state: State8080, arg: STATEEnums) => {
   state.cycles -= 11;
 };
 
+export const DCR = (state: State8080, arg: STATEEnums) => {
+  /* eslint-disable-next-line default-case */
+  switch (arg) {
+    case STATEEnums.B: {
+      state.c -= 1;
+      state.cc.setFlags(state.c, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
+  }
+};
+
 export const LDAX = (state: State8080, arg: STATEEnums) => {
   switch (arg) {
     case STATEEnums.B: {

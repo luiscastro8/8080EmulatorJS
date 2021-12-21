@@ -100,6 +100,17 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x0a, 1, 7, before, after);
   });
 
+  test("0x0d", () => {
+    const before = () => {
+      state.c = 0x05;
+    };
+    const after = () => {
+      expect(state.c).toBe(0x04);
+      expect(setFlagsSpy).toBeCalled();
+    };
+    testInstruction(state, 0x0d, 1, 5, before, after);
+  });
+
   test("0x0e", () => {
     const before = () => {
       state.memory[state.pc + 1] = 0x20;
