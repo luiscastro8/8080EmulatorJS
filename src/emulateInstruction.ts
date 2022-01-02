@@ -54,6 +54,16 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0x0f: {
+      let lastBit = state.a & 0b1;
+      state.cc.cy = !!lastBit;
+      lastBit <<= 7;
+      state.a >>= 1;
+      state.a |= lastBit;
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0x11: {
       LXI(state, STATEEnums.D);
       break;
@@ -220,6 +230,13 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xe5: {
       PUSH(state, STATEEnums.H);
+      break;
+    }
+    case 0xe6: {
+      state.a &= instruction[1];
+      state.cc.setFlags(state.a, true);
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0xeb: {
