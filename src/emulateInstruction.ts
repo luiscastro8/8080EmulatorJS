@@ -233,6 +233,10 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 4;
       break;
     }
+    case 0xf5: {
+      PUSH(state, STATEEnums.PSW);
+      break;
+    }
     case 0xfe: {
       state.cc.setFlags(state.a - instruction[1], true);
       state.pc += 2;

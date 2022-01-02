@@ -19,6 +19,26 @@ export default class ConditionCodes {
     }
   };
 
+  public getFlags = (): number => {
+    let answer = 0;
+    if (this.z) {
+      answer += 0b1;
+    }
+    if (this.s) {
+      answer += 0b10;
+    }
+    if (this.p) {
+      answer += 0b100;
+    }
+    if (this.cy) {
+      answer += 0b1000;
+    }
+    if (this.ac) {
+      answer += 0b10000;
+    }
+    return answer;
+  };
+
   public static getParity = (val: number) => {
     let count = 0;
     let tempVal = val;

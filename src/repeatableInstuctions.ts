@@ -5,6 +5,7 @@ export enum STATEEnums {
   D,
   H,
   SP,
+  PSW,
 }
 
 export const DAD = (state: State8080, arg: STATEEnums) => {
@@ -142,6 +143,11 @@ export const PUSH = (state: State8080, arg: STATEEnums) => {
     case STATEEnums.H: {
       state.memory[state.sp - 2] = state.l;
       state.memory[state.sp - 1] = state.h;
+      break;
+    }
+    case STATEEnums.PSW: {
+      state.memory[state.sp - 1] = state.a;
+      state.memory[state.sp - 2] = state.cc.getFlags();
       break;
     }
   }
