@@ -195,6 +195,14 @@ const emulateInstruction = (state: State8080) => {
       PUSH(state, STATEEnums.B);
       break;
     }
+    case 0xc6: {
+      const answer = state.a + instruction[1];
+      state.cc.setFlags(answer, true);
+      state.a = answer;
+      state.pc += 2;
+      state.cycles -= 7;
+      break;
+    }
     case 0xc9: {
       state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
       state.sp += 2;
@@ -248,6 +256,10 @@ const emulateInstruction = (state: State8080) => {
       state.l = temp;
       state.pc += 1;
       state.cycles -= 4;
+      break;
+    }
+    case 0xf1: {
+      POP(state, STATEEnums.PSW);
       break;
     }
     case 0xf5: {

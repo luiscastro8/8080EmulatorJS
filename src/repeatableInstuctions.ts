@@ -121,6 +121,14 @@ export const POP = (state: State8080, arg: STATEEnums) => {
       state.h = state.memory[state.sp + 1];
       break;
     }
+    case STATEEnums.PSW: {
+      state.cc.z = !!(state.memory[state.sp] & 0b1);
+      state.cc.s = !!((state.memory[state.sp] >> 1) & 0b1);
+      state.cc.p = !!((state.memory[state.sp] >> 2) & 0b1);
+      state.cc.cy = !!((state.memory[state.sp] >> 3) & 0b1);
+      state.cc.ac = !!((state.memory[state.sp] >> 4) & 0b1);
+      state.a = state.memory[state.sp + 1];
+    }
   }
   state.pc += 1;
   state.cycles -= 10;
