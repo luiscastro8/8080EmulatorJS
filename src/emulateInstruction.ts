@@ -198,6 +198,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0xa7: {
+      state.cc.setFlags(state.a, true);
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0xaf: {
       state.a ^= state.a;
       state.cc.setFlags(state.a, true);
@@ -297,6 +303,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xf5: {
       PUSH(state, STATEEnums.PSW);
+      break;
+    }
+    case 0xfb: {
+      state.enableInterrupt = true;
+      state.pc += 1;
+      state.cycles -= 4;
       break;
     }
     case 0xfe: {

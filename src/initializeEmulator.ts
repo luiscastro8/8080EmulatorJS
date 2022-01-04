@@ -70,8 +70,8 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
     state.memory[i] = romBuffer[i];
   }
 
-  for (let i = 0; i < 100000; i += 1) {
-    if (i > 40000) {
+  for (let i = 0; i < 50000; i += 1) {
+    if (i > 42030) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${i}: emulating instruction 0x${Number(
@@ -83,6 +83,7 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
 
     if (state.cycles <= 0) {
       processInterrupt();
+      state.cycles += 16667;
     }
   }
 };
