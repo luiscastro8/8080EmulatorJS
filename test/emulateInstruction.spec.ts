@@ -287,6 +287,28 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x36, 2, 10, before, after);
   });
 
+  test("0x3a", () => {
+    const before = () => {
+      state.memory[state.pc + 1] = 0x21;
+      state.memory[state.pc + 2] = 0x20;
+      state.memory[0x2021] = 0x30;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x30);
+    };
+    testInstruction(state, 0x3a, 3, 13, before, after);
+  });
+
+  test("0x3e", () => {
+    const before = () => {
+      state.memory[state.pc + 1] = 0x20;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x20);
+    };
+    testInstruction(state, 0x3e, 2, 7, before, after);
+  });
+
   test("0x56", () => {
     const before = () => {
       state.h = 0x30;
@@ -353,6 +375,16 @@ describe("emulate instructions", () => {
       expect(state.a).toBe(0x20);
     };
     testInstruction(state, 0x7a, 1, 5, before, after);
+  });
+
+  test("0x7b", () => {
+    const before = () => {
+      state.e = 0x21;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x21);
+    };
+    testInstruction(state, 0x7b, 1, 5, before, after);
   });
 
   test("0x7c", () => {
