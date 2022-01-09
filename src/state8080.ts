@@ -186,4 +186,31 @@ export default class State8080 {
       }
     }
   };
+
+  public readFromPort = (port: number) => {
+    switch (port) {
+      case 0: {
+        this.a = this.ports.r0;
+        break;
+      }
+      case 1: {
+        this.a = this.ports.r1;
+        this.ports.r1 = 0;
+        break;
+      }
+      case 2: {
+        this.a = this.ports.r2;
+        break;
+      }
+      case 3: {
+        let temp = this.shift << this.shiftAmount;
+        temp >>= 8;
+        this.a = temp;
+        break;
+      }
+      default: {
+        throw new Error("An error has occurred");
+      }
+    }
+  };
 }

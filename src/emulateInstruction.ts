@@ -119,6 +119,14 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 13;
       break;
     }
+    case 0x35: {
+      const address = (state.h << 8) | state.l;
+      state.memory[address] -= 1;
+      state.cc.setFlags(state.memory[address], false);
+      state.pc += 1;
+      state.cycles -= 10;
+      break;
+    }
     case 0x36: {
       const address = (state.h << 8) | state.l;
       state.memory[address] = instruction[1];
@@ -269,6 +277,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xd5: {
       PUSH(state, STATEEnums.D);
+      break;
+    }
+    case 0xdb: {
+      state.readFromPort(instruction[1]);
+      state.pc += 2;
+      state.cycles -= 10;
       break;
     }
     case 0xe1: {

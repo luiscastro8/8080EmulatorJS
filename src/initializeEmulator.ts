@@ -71,7 +71,7 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   }
 
   for (let i = 0; i < 50000; i += 1) {
-    if (i > 42030) {
+    if (i > 42400) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${i}: emulating instruction 0x${Number(

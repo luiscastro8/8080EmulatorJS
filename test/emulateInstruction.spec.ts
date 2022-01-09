@@ -6,10 +6,12 @@ describe("emulate instructions", () => {
   let state: State8080;
   let setFlagsSpy: jest.SpyInstance;
   let writeToPortSpy: jest.SpyInstance;
+  let readFromPortSpy: jest.SpyInstance;
   beforeEach(() => {
     state = new State8080();
     setFlagsSpy = jest.spyOn(state.cc, "setFlags");
     writeToPortSpy = jest.spyOn(state, "writeToPort");
+    readFromPortSpy = jest.spyOn(state, "readFromPort");
   });
 
   test("unknown opcode", () => {
@@ -287,6 +289,19 @@ describe("emulate instructions", () => {
       expect(state.memory[0x2021]).toBe(0x22);
     };
     testInstruction(state, 0x32, 3, 13, before, after);
+  });
+
+  test("0x35", () => {
+    const before = () => {
+      state.h = 0x20;
+      state.l = 0x21;
+      state.memory[0x2021] = 0x06;
+    };
+    const after = () => {
+      expect(state.memory[0x2021]).toBe(0x05);
+      expect(setFlagsSpy).toBeCalled();
+    };
+    testInstruction(state, 0x35, 1, 10, before, after);
   });
 
   test("0x36", () => {
@@ -582,6 +597,13 @@ describe("emulate instructions", () => {
       expect(state.memory[state.sp + 1]).toBe(0x20);
     };
     testInstruction(state, 0xd5, 1, 11, before, after);
+  });
+
+  test("0xdb", () => {
+    const after = () => {
+      expect(readFromPortSpy).toBeCalled();
+    };
+    testInstruction(state, 0xdb, 2, 10, undefined, after);
   });
 
   test("0xe1", () => {
