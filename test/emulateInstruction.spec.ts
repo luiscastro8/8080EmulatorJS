@@ -568,6 +568,28 @@ describe("emulate instructions", () => {
     expect(state.sp).toBe(sp + 2);
   });
 
+  describe("0xca", () => {
+    test("cc.z is true", () => {
+      const { cycles } = state;
+      state.cc.z = true;
+      state.memory[state.pc] = 0xca;
+      state.memory[state.pc + 1] = 0x22;
+      state.memory[state.pc + 2] = 0x20;
+
+      emulateInstruction(state);
+
+      expect(state.pc).toBe(0x2022);
+      expect(state.cycles).toBe(cycles - 15);
+    });
+
+    test("cc.z is false", () => {
+      const before = () => {
+        state.cc.z = false;
+      };
+      testInstruction(state, 0xca, 3, 10, before);
+    });
+  });
+
   test("0xcd", () => {
     const { sp, cycles } = state;
     state.pc = 0x2021;
@@ -596,6 +618,28 @@ describe("emulate instructions", () => {
       expect(state.d).toBe(0x21);
     };
     testInstruction(state, 0xd1, 1, 10, before, after);
+  });
+
+  describe("0xd2", () => {
+    test("cc.cy is false", () => {
+      const { cycles } = state;
+      state.cc.cy = false;
+      state.memory[state.pc] = 0xd2;
+      state.memory[state.pc + 1] = 0x22;
+      state.memory[state.pc + 2] = 0x20;
+
+      emulateInstruction(state);
+
+      expect(state.pc).toBe(0x2022);
+      expect(state.cycles).toBe(cycles - 15);
+    });
+
+    test("cc.cy is true", () => {
+      const before = () => {
+        state.cc.cy = true;
+      };
+      testInstruction(state, 0xd2, 3, 10, before);
+    });
   });
 
   test("0xd3", () => {

@@ -8,6 +8,12 @@ export enum STATEEnums {
   PSW,
 }
 
+export enum JumpEnums {
+  CY,
+  NCY,
+  Z
+}
+
 export const DAD = (state: State8080, arg: STATEEnums) => {
   /* eslint-disable-next-line default-case */
   switch (arg) {
@@ -54,6 +60,34 @@ export const DCR = (state: State8080, arg: STATEEnums) => {
     }
   }
 };
+
+export const JUMP = (state: State8080, arg: JumpEnums) => {
+  const instruction = state.memory.slice(state.pc, state.pc + 3);
+  switch (arg) {
+    case JumpEnums.NCY: {
+      if (!state.cc.cy) {
+        state.pc = (instruction[2] << 8) | instruction[1];
+        state.cycles -= 15;
+      }
+      else {
+        state.pc += 3;
+        state.cycles -= 10;
+      }
+      break;
+    }
+    case JumpEnums.Z: {
+      if (state.cc.z) {
+        state.pc = (instruction[2] << 8) | instruction[1];
+        state.cycles -= 15;
+      }
+      else {
+        state.pc += 3;
+        state.cycles -= 10;
+      }
+      break;
+    }
+  }
+}
 
 export const LDAX = (state: State8080, arg: STATEEnums) => {
   switch (arg) {

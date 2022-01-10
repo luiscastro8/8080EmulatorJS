@@ -1,6 +1,8 @@
 import {
   DAD,
   DCR,
+  JUMP,
+  JumpEnums,
   LDAX,
   LXI,
   POP,
@@ -267,6 +269,10 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 10;
       break;
     }
+    case 0xca: {
+      JUMP(state, JumpEnums.Z)
+      break;
+    }
     case 0xcd: {
       const returnAddress = state.pc + 3;
       state.memory[state.sp - 1] = returnAddress >> 8;
@@ -278,6 +284,10 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xd1: {
       POP(state, STATEEnums.D);
+      break;
+    }
+    case 0xd2: {
+      JUMP(state, JumpEnums.NCY);
       break;
     }
     case 0xd3: {
