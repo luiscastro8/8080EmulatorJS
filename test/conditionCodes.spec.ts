@@ -34,10 +34,12 @@ test("carry flag", () => {
   expect(cc.cy).toBe(false);
 });
 
-test("getParity", () => {
-  expect(ConditionCodes.getParity(0b000)).toBe(0);
-  expect(ConditionCodes.getParity(0b001)).toBe(1);
-  expect(ConditionCodes.getParity(0b010)).toBe(1);
-  expect(ConditionCodes.getParity(0b011)).toBe(2);
-  expect(ConditionCodes.getParity(0b100)).toBe(1);
-});
+// TODO Remove this if it turned out wrong
+
+// test("getParity", () => {
+//   expect(ConditionCodes.getParity(0b000)).toBe(0);
+//   expect(ConditionCodes.getParity(0b001)).toBe(1);
+//   expect(ConditionCodes.getParity(0b010)).toBe(1);
+//   expect(ConditionCodes.getParity(0b011)).toBe(2);
+//   expect(ConditionCodes.getParity(0b100)).toBe(1);
+// });

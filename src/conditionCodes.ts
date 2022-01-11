@@ -13,7 +13,7 @@ export default class ConditionCodes {
   public setFlags = (answer: number, changeCarry: boolean) => {
     this.z = (answer & 0xff) === 0;
     this.s = (answer & 0x80) !== 0;
-    this.p = ConditionCodes.getParity(answer & 0xff) % 2 === 0;
+    this.p = (answer & 0xff) % 2 == 0;
     if (changeCarry) {
       this.cy = answer > 0xff || answer < 0;
     }
@@ -39,15 +39,17 @@ export default class ConditionCodes {
     return answer;
   };
 
-  public static getParity = (val: number) => {
-    let count = 0;
-    let tempVal = val;
-    while (tempVal !== 0) {
-      if (tempVal % 2 === 1) {
-        count += 1;
-      }
-      tempVal = Math.floor(tempVal / 2);
-    }
-    return count;
-  };
+  // TODO: Remove this if this turned out wrong
+
+  // public static getParity = (val: number) => {
+  //   let count = 0;
+  //   let tempVal = val;
+  //   while (tempVal !== 0) {
+  //     if (tempVal % 2 === 1) {
+  //       count += 1;
+  //     }
+  //     tempVal = Math.floor(tempVal / 2);
+  //   }
+  //   return count;
+  // };
 }
