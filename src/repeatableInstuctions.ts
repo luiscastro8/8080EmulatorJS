@@ -11,7 +11,7 @@ export enum STATEEnums {
 export enum JumpEnums {
   CY,
   NCY,
-  Z
+  Z,
 }
 
 export const DAD = (state: State8080, arg: STATEEnums) => {
@@ -68,8 +68,7 @@ export const JUMP = (state: State8080, arg: JumpEnums) => {
       if (!state.cc.cy) {
         state.pc = (instruction[2] << 8) | instruction[1];
         state.cycles -= 15;
-      }
-      else {
+      } else {
         state.pc += 3;
         state.cycles -= 10;
       }
@@ -79,15 +78,14 @@ export const JUMP = (state: State8080, arg: JumpEnums) => {
       if (state.cc.z) {
         state.pc = (instruction[2] << 8) | instruction[1];
         state.cycles -= 15;
-      }
-      else {
+      } else {
         state.pc += 3;
         state.cycles -= 10;
       }
       break;
     }
   }
-}
+};
 
 export const LDAX = (state: State8080, arg: STATEEnums) => {
   switch (arg) {

@@ -270,7 +270,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xca: {
-      JUMP(state, JumpEnums.Z)
+      JUMP(state, JumpEnums.Z);
       break;
     }
     case 0xcd: {
