@@ -84,6 +84,9 @@ export const JUMP = (state: State8080, arg: JumpEnums) => {
       }
       break;
     }
+    default: {
+      throw new Error("An error has occurred");
+    }
   }
 };
 

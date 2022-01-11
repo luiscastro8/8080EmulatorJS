@@ -18,9 +18,9 @@ test("sign flag", () => {
 
 test("parity flag", () => {
   const cc = new ConditionCodes();
-  cc.setFlags(0b011011, false);
+  cc.setFlags(0, false);
   expect(cc.p).toBe(true);
-  cc.setFlags(0b10101, false);
+  cc.setFlags(1, false);
   expect(cc.p).toBe(false);
 });
 

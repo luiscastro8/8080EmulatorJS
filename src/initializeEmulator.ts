@@ -53,13 +53,16 @@ const processInterrupt = async () => {
         Math.floor(new Date().getTime() / 1000) - startFrame;
       startFrame = Math.floor(new Date().getTime() / 1000);
       if (timeBetweenFrames < 17) {
-        await sleep(1000);
+        await sleep(17 - timeBetweenFrames);
       }
       state.interruptPointer = 0x10;
       updateDisplay();
     }
   }
 };
+
+const convert = (a: number, pad: number): string =>
+  Number(a).toString(16).padStart(pad, "0");
 
 const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   const reader = <FileReader>loadFileEvent.currentTarget;
@@ -70,19 +73,29 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
     state.memory[i] = romBuffer[i];
   }
 
-  for (let i = 0; i < 50000; i += 1) {
-    if (i > 42400) {
+  for (let i = 0; i < 400000; i += 1) {
+    if (i > 239870 && i % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
-        `${i}: emulating instruction 0x${Number(
-          state.memory[state.pc]
-        ).toString(16)}`
+        `${i}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
+          state.c,
+          2
+        )} ${convert(state.d, 2)}${convert(state.e, 2)} ${convert(
+          state.h,
+          2
+        )}${convert(state.l, 2)} ${convert(state.pc, 4)} ${convert(
+          state.sp,
+          4
+        )} ${state.cc.z ? "z" : "."}${state.cc.s ? "s" : "."}${
+          state.cc.p ? "p" : "."
+        }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
       );
     }
     emulateInstruction(state);
 
     if (state.cycles <= 0) {
-      processInterrupt();
+      /* eslint-disable-next-line no-await-in-loop */
+      await processInterrupt();
       state.cycles += 16667;
     }
   }

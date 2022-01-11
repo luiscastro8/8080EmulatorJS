@@ -13,7 +13,7 @@ export default class ConditionCodes {
   public setFlags = (answer: number, changeCarry: boolean) => {
     this.z = (answer & 0xff) === 0;
     this.s = (answer & 0x80) !== 0;
-    this.p = (answer & 0xff) % 2 == 0;
+    this.p = (answer & 0xff) % 2 === 0;
     if (changeCarry) {
       this.cy = answer > 0xff || answer < 0;
     }
