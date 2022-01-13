@@ -73,8 +73,8 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
     state.memory[i] = romBuffer[i];
   }
 
-  for (let i = 0; i < 400000; i += 1) {
-    if (i > 239870 && i % 1 === 0) {
+  for (let i = 0; i < 1000000; i += 1) {
+    if (i > 788000 && i % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${i}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(

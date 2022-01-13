@@ -136,12 +136,25 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 10;
       break;
     }
+    case 0x37: {
+      state.cc.cy = true;
+		state.pc += 1;
+		state.cycles -= 4;
+		break;
+    }
     case 0x3a: {
       const address = (instruction[2] << 8) | instruction[1];
       state.a = state.memory[address];
       state.pc += 3;
       state.cycles -= 13;
       break;
+    }
+    case 0x3d: {
+      state.a -= 1;
+		state.cc.setFlags(state.a, false);
+		state.pc += 1;
+		state.cycles -= 5;
+		break;
     }
     case 0x3e: {
       state.a = instruction[1];
