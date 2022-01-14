@@ -1,6 +1,7 @@
 import {
   DAD,
   DCR,
+  INX,
   JUMP,
   JumpEnums,
   LDAX,
@@ -23,6 +24,10 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x01: {
       LXI(state, STATEEnums.B);
+      break;
+    }
+    case 0x03: {
+      INX(state, STATEEnums.B);
       break;
     }
     case 0x05: {
@@ -71,12 +76,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x13: {
-      let address = (state.d << 8) | state.e;
-      address += 1;
-      state.d = (address >> 8) & 0xff;
-      state.e = address & 0xff;
-      state.pc += 1;
-      state.cycles -= 6;
+      INX(state, STATEEnums.D);
       break;
     }
     case 0x19: {
@@ -138,9 +138,9 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x37: {
       state.cc.cy = true;
-		state.pc += 1;
-		state.cycles -= 4;
-		break;
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
     }
     case 0x3a: {
       const address = (instruction[2] << 8) | instruction[1];
@@ -151,10 +151,10 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x3d: {
       state.a -= 1;
-		state.cc.setFlags(state.a, false);
-		state.pc += 1;
-		state.cycles -= 5;
-		break;
+      state.cc.setFlags(state.a, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
     }
     case 0x3e: {
       state.a = instruction[1];
@@ -181,6 +181,12 @@ const emulateInstruction = (state: State8080) => {
       state.h = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
+      break;
+    }
+    case 0x67: {
+      state.h = state.a;
+      state.pc += 1;
+      state.cycles -= 5;
       break;
     }
     case 0x6f: {

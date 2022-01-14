@@ -35,6 +35,18 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x01, 3, 10, before, after);
   });
 
+  test("0x03", () => {
+    const before = () => {
+      state.b = 0xff;
+      state.c = 0xff;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x0);
+      expect(state.c).toBe(0x0);
+    };
+    testInstruction(state, 0x03, 1, 6, before, after);
+  });
+
   test("0x05", () => {
     const before = () => {
       state.b = 0x00;
@@ -317,12 +329,12 @@ describe("emulate instructions", () => {
   test("0x37", () => {
     const before = () => {
       state.cc.cy = false;
-    }
+    };
     const after = () => {
       expect(state.cc.cy).toBe(true);
-    }
+    };
     testInstruction(state, 0x37, 1, 4, before, after);
-  })
+  });
 
   test("0x3a", () => {
     const before = () => {
@@ -339,13 +351,13 @@ describe("emulate instructions", () => {
   test("0x3d", () => {
     const before = () => {
       state.a = 5;
-    }
+    };
     const after = () => {
       expect(state.a).toBe(4);
       expect(setFlagsSpy).toBeCalled();
-    }
+    };
     testInstruction(state, 0x3d, 1, 5, before, after);
-  })
+  });
 
   test("0x3e", () => {
     const before = () => {
@@ -391,6 +403,16 @@ describe("emulate instructions", () => {
       expect(state.h).toBe(0x21);
     };
     testInstruction(state, 0x66, 1, 7, before, after);
+  });
+
+  test("0x67", () => {
+    const before = () => {
+      state.a = 0x30;
+    };
+    const after = () => {
+      expect(state.h).toBe(0x30);
+    };
+    testInstruction(state, 0x67, 1, 5, before, after);
   });
 
   test("0x6f", () => {

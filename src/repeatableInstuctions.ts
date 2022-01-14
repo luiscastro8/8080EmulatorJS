@@ -15,7 +15,6 @@ export enum JumpEnums {
 }
 
 export const DAD = (state: State8080, arg: STATEEnums) => {
-  /* eslint-disable-next-line default-case */
   switch (arg) {
     case STATEEnums.B: {
       const hl = (state.h << 8) | state.l;
@@ -43,13 +42,15 @@ export const DAD = (state: State8080, arg: STATEEnums) => {
       state.cc.cy = answer > 0xff;
       break;
     }
+    default: {
+      throw new Error("An error has occurred");
+    }
   }
   state.pc += 1;
   state.cycles -= 11;
 };
 
 export const DCR = (state: State8080, arg: STATEEnums) => {
-  /* eslint-disable-next-line default-case */
   switch (arg) {
     case STATEEnums.B: {
       state.c -= 1;
@@ -58,7 +59,34 @@ export const DCR = (state: State8080, arg: STATEEnums) => {
       state.cycles -= 5;
       break;
     }
+    default: {
+      throw new Error("An error has occurred");
+    }
   }
+};
+
+export const INX = (state: State8080, arg: STATEEnums) => {
+  switch (arg) {
+    case STATEEnums.B: {
+      let address = (state.b << 8) | state.c;
+      address += 1;
+      state.b = (address >> 8) & 0xff;
+      state.c = address & 0xff;
+      break;
+    }
+    case STATEEnums.D: {
+      let address = (state.d << 8) | state.e;
+      address += 1;
+      state.d = (address >> 8) & 0xff;
+      state.e = address & 0xff;
+      break;
+    }
+    default: {
+      throw new Error("An error has occurred");
+    }
+  }
+  state.pc += 1;
+  state.cycles -= 6;
 };
 
 export const JUMP = (state: State8080, arg: JumpEnums) => {
@@ -103,7 +131,7 @@ export const LDAX = (state: State8080, arg: STATEEnums) => {
       break;
     }
     default: {
-      throw new Error();
+      throw new Error("An error has occurred");
     }
   }
   state.pc += 1;
@@ -112,7 +140,6 @@ export const LDAX = (state: State8080, arg: STATEEnums) => {
 
 export const LXI = (state: State8080, arg: STATEEnums) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
-  /* eslint-disable-next-line default-case */
   switch (arg) {
     case STATEEnums.B: {
       state.c = instruction[1];
@@ -133,13 +160,15 @@ export const LXI = (state: State8080, arg: STATEEnums) => {
       state.sp = (instruction[2] << 8) + instruction[1];
       break;
     }
+    default: {
+      throw new Error("An error has occurred");
+    }
   }
   state.pc += 3;
   state.cycles -= 10;
 };
 
 export const POP = (state: State8080, arg: STATEEnums) => {
-  /* eslint-disable-next-line default-case */
   switch (arg) {
     case STATEEnums.B: {
       state.c = state.memory[state.sp];
@@ -163,6 +192,10 @@ export const POP = (state: State8080, arg: STATEEnums) => {
       state.cc.cy = !!((state.memory[state.sp] >> 3) & 0b1);
       state.cc.ac = !!((state.memory[state.sp] >> 4) & 0b1);
       state.a = state.memory[state.sp + 1];
+      break;
+    }
+    default: {
+      throw new Error("An error has occurred");
     }
   }
   state.pc += 1;
@@ -171,7 +204,6 @@ export const POP = (state: State8080, arg: STATEEnums) => {
 };
 
 export const PUSH = (state: State8080, arg: STATEEnums) => {
-  /* eslint-disable-next-line default-case */
   switch (arg) {
     case STATEEnums.B: {
       state.memory[state.sp - 2] = state.c;
@@ -192,6 +224,9 @@ export const PUSH = (state: State8080, arg: STATEEnums) => {
       state.memory[state.sp - 1] = state.a;
       state.memory[state.sp - 2] = state.cc.getFlags();
       break;
+    }
+    default: {
+      throw new Error("An error has occured");
     }
   }
   state.sp -= 2;
