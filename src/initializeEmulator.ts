@@ -74,7 +74,7 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   }
 
   for (let i = 0; i < 2000000; i += 1) {
-    if (i > 1918200 && i % 1 === 0) {
+    if (i > 1971900 && i % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${i}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(

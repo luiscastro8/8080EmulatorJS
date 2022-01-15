@@ -110,6 +110,12 @@ const emulateInstruction = (state: State8080) => {
       DAD(state, STATEEnums.H);
       break;
     }
+    case 0x2e: {
+      state.l = instruction[1];
+      state.pc += 2;
+      state.cycles -= 7;
+      break;
+    }
     case 0x31: {
       LXI(state, STATEEnums.SP);
       break;
@@ -234,6 +240,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x7c: {
       state.a = state.h;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
+    case 0x7d: {
+      state.a = state.l;
       state.pc += 1;
       state.cycles -= 5;
       break;
