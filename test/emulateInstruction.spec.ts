@@ -280,6 +280,18 @@ describe("emulate instructions", () => {
     });
   });
 
+  test("0x2b", () => {
+    const before = () => {
+      state.l = 0;
+      state.h = 0;
+    };
+    const after = () => {
+      expect(state.h).toBe(0xff);
+      expect(state.l).toBe(0xff);
+    };
+    testInstruction(state, 0x2b, 1, 6, before, after);
+  });
+
   test("0x2e", () => {
     const before = () => {
       state.memory[state.pc + 1] = 0x30;
@@ -863,6 +875,18 @@ describe("emulate instructions", () => {
       expect(state.memory[state.sp + 1]).toBe(0x20);
     };
     testInstruction(state, 0xd5, 1, 11, before, after);
+  });
+
+  test("0xd6", () => {
+    const before = () => {
+      state.a = 7;
+      state.memory[state.pc + 1] = 3;
+    };
+    const after = () => {
+      expect(setFlagsSpy).toBeCalled();
+      expect(state.a).toBe(4);
+    };
+    testInstruction(state, 0xd6, 2, 7, before, after);
   });
 
   describe("0xd8", () => {

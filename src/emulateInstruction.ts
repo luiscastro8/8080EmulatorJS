@@ -1,6 +1,7 @@
 import {
   DAD,
   DCR,
+  DCX,
   INX,
   JUMP,
   JumpEnums,
@@ -108,6 +109,10 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x29: {
       DAD(state, STATEEnums.H);
+      break;
+    }
+    case 0x2b: {
+      DCX(state, STATEEnums.H);
       break;
     }
     case 0x2e: {
@@ -404,6 +409,14 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xd5: {
       PUSH(state, STATEEnums.D);
+      break;
+    }
+    case 0xd6: {
+      const answer = state.a - instruction[1];
+      state.a = answer;
+      state.cc.setFlags(answer, true);
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0xd8: {

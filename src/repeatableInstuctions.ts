@@ -50,6 +50,23 @@ export const DAD = (state: State8080, arg: STATEEnums) => {
   state.cycles -= 11;
 };
 
+export const DCX = (state: State8080, arg: STATEEnums) => {
+  switch (arg) {
+    case STATEEnums.H: {
+      const hl = (state.h << 8) | state.l;
+      const answer = hl - 1;
+      state.h = (answer >> 8) & 0xff;
+      state.l = answer & 0xff;
+      break;
+    }
+    default: {
+      throw new Error("An error has occurred");
+    }
+  }
+  state.pc += 1;
+  state.cycles -= 6;
+};
+
 export const DCR = (state: State8080, arg: STATEEnums) => {
   switch (arg) {
     case STATEEnums.B: {
