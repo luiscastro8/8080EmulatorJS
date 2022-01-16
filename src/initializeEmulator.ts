@@ -50,13 +50,18 @@ const processInterrupt = async () => {
       state.interruptPointer = 0x08;
     } else {
       const timeBetweenFrames =
-        Math.floor(new Date().getTime() / 1000) - startFrame;
-      startFrame = Math.floor(new Date().getTime() / 1000);
+        Math.floor(performance.now()) - startFrame;
+      startFrame = Math.floor(performance.now());
+      const fpsDisplay = document.getElementById("fps");
+      updateDisplay();
       if (timeBetweenFrames < 17) {
+        fpsDisplay.innerText = "FPS: 60 " + timeBetweenFrames;
         await sleep(17 - timeBetweenFrames);
+      } else {
+        fpsDisplay.innerText = `FPS: ${1000 / timeBetweenFrames}`
       }
       state.interruptPointer = 0x10;
-      updateDisplay();
+      
     }
   }
 };
@@ -67,7 +72,7 @@ const convert = (a: number, pad: number): string =>
 const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   const reader = <FileReader>loadFileEvent.currentTarget;
   const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
-  startFrame = Math.floor(new Date().getTime() / 1000);
+  startFrame = Math.floor(performance.now());
   state = new State8080();
   for (let i = 0; i < romBuffer.length; i += 1) {
     state.memory[i] = romBuffer[i];
