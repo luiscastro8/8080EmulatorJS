@@ -18,7 +18,9 @@ export const testInstruction = (
 
   emulateInstruction(state);
 
-  expect(state.pc).toBe(pc + pcIncrement);
+  if (pcIncrement !== undefined) {
+    expect(state.pc).toBe(pc + pcIncrement);
+  }
   expect(state.cycles).toBe(cycles - cyclesDecrement);
   if (after) {
     after();
