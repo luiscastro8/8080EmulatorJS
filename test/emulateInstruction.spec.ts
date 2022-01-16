@@ -607,6 +607,29 @@ describe("emulate instructions", () => {
     testInstruction(state, 0xb6, 1, 7, before, after);
   });
 
+  describe("0xc0", () => {
+    test("cc.z is true", () => {
+      const before = () => {
+        state.cc.z = true;
+      };
+      testInstruction(state, 0xc0, 1, 5, before);
+    });
+
+    test("cc.z is false", () => {
+      const { sp } = state;
+      const before = () => {
+        state.cc.z = false;
+        state.memory[state.sp] = 0x21;
+        state.memory[state.sp + 1] = 0x20;
+      };
+      const after = () => {
+        expect(state.pc).toBe(0x2021);
+        expect(state.sp).toBe(sp + 2);
+      };
+      testInstruction(state, 0xc0, undefined, 11, before, after);
+    });
+  });
+
   test("0xc1", () => {
     const { sp } = state;
     const before = () => {
@@ -757,6 +780,29 @@ describe("emulate instructions", () => {
     expect(state.memory[sp - 1]).toBe(0x20);
     expect(state.memory[sp - 2]).toBe(0x21 + 3);
     expect(state.cycles).toBe(cycles - 17);
+  });
+
+  describe("0xd0", () => {
+    test("cc.cy is true", () => {
+      const before = () => {
+        state.cc.cy = true;
+      };
+      testInstruction(state, 0xd0, 1, 5, before);
+    });
+
+    test("cc.cy is false", () => {
+      const { sp } = state;
+      const before = () => {
+        state.cc.cy = false;
+        state.memory[state.sp] = 0x21;
+        state.memory[state.sp + 1] = 0x20;
+      };
+      const after = () => {
+        expect(state.pc).toBe(0x2021);
+        expect(state.sp).toBe(sp + 2);
+      };
+      testInstruction(state, 0xd0, undefined, 11, before, after);
+    });
   });
 
   test("0xd1", () => {

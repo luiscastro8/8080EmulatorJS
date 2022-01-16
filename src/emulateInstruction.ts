@@ -305,6 +305,17 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0xc0: {
+      if (!state.cc.z) {
+        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.sp += 2;
+        state.cycles -= 11;
+      } else {
+        state.cycles -= 5;
+        state.pc += 1;
+      }
+      break;
+    }
     case 0xc1: {
       POP(state, STATEEnums.B);
       break;
@@ -364,6 +375,17 @@ const emulateInstruction = (state: State8080) => {
       state.sp -= 2;
       state.pc = (instruction[2] << 8) | instruction[1];
       state.cycles -= 17;
+      break;
+    }
+    case 0xd0: {
+      if (!state.cc.cy) {
+        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.sp += 2;
+        state.cycles -= 11;
+      } else {
+        state.pc += 1;
+        state.cycles -= 5;
+      }
       break;
     }
     case 0xd1: {
