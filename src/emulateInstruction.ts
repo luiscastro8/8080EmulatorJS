@@ -44,6 +44,16 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0x07: {
+      let firstBit = state.a & 0b10000000;
+      state.cc.cy = !!firstBit;
+      firstBit >>= 7;
+      state.a <<= 1;
+      state.a |= firstBit;
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0x09: {
       DAD(state, STATEEnums.B);
       break;
@@ -78,6 +88,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x13: {
       INX(state, STATEEnums.D);
+      break;
+    }
+    case 0x16: {
+      state.d = instruction[1];
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0x19: {

@@ -68,6 +68,18 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x06, 2, 7, before, after);
   });
 
+  test("0x07", () => {
+    const before = () => {
+      state.cc.cy = true;
+      state.a = 0b01010101;
+    };
+    const after = () => {
+      expect(state.cc.cy).toBe(false);
+      expect(state.a).toBe(0b10101010);
+    };
+    testInstruction(state, 0x07, 1, 4, before, after);
+  });
+
   describe("0x09", () => {
     test("0x03 + 0x04 = 0x07", () => {
       const before = () => {
@@ -168,6 +180,16 @@ describe("emulate instructions", () => {
       expect(state.e).toBe(0x0);
     };
     testInstruction(state, 0x13, 1, 6, before, after);
+  });
+
+  test("0x16", () => {
+    const before = () => {
+      state.memory[state.pc + 1] = 0x30;
+    };
+    const after = () => {
+      expect(state.d).toBe(0x30);
+    };
+    testInstruction(state, 0x16, 2, 7, before, after);
   });
 
   describe("0x19", () => {
