@@ -49,19 +49,17 @@ const processInterrupt = async () => {
     if (state.interruptPointer === 0x10) {
       state.interruptPointer = 0x08;
     } else {
-      const timeBetweenFrames =
-        Math.floor(performance.now()) - startFrame;
+      const timeBetweenFrames = Math.floor(performance.now()) - startFrame;
       startFrame = Math.floor(performance.now());
       const fpsDisplay = document.getElementById("fps");
       updateDisplay();
       if (timeBetweenFrames < 17) {
-        fpsDisplay.innerText = "FPS: 60 " + timeBetweenFrames;
+        fpsDisplay.innerText = `FPS: 60 ${timeBetweenFrames}`;
         await sleep(17 - timeBetweenFrames);
       } else {
-        fpsDisplay.innerText = `FPS: ${1000 / timeBetweenFrames}`
+        fpsDisplay.innerText = `FPS: ${1000 / timeBetweenFrames}`;
       }
       state.interruptPointer = 0x10;
-      
     }
   }
 };

@@ -379,6 +379,18 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x3e, 2, 7, before, after);
   });
 
+  test("0x46", () => {
+    const before = () => {
+      state.l = 0x22;
+      state.h = 0x20;
+      state.memory[0x2022] = 0x23;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x23);
+    };
+    testInstruction(state, 0x46, 1, 7, before, after);
+  });
+
   test("0x4f", () => {
     const before = () => {
       state.a = 0x30;
@@ -555,6 +567,18 @@ describe("emulate instructions", () => {
       expect(setFlagsSpy).toBeCalled();
     };
     testInstruction(state, 0xaf, 1, 4, before, after);
+  });
+
+  test("0xb0", () => {
+    const before = () => {
+      state.a = 0b00110011;
+      state.b = 0b01010101;
+    };
+    const after = () => {
+      expect(setFlagsSpy).toBeCalled();
+      expect(state.a).toBe(0b01110111);
+    };
+    testInstruction(state, 0xb0, 1, 4, before, after);
   });
 
   test("0xb6", () => {
@@ -846,6 +870,22 @@ describe("emulate instructions", () => {
       expect(state.h).toBe(0x21);
     };
     testInstruction(state, 0xe1, 1, 10, before, after);
+  });
+
+  test("0xe3", () => {
+    const before = () => {
+      state.memory[state.sp] = 0x04;
+      state.memory[state.sp + 1] = 0x05;
+      state.l = 0x06;
+      state.h = 0x07;
+    };
+    const after = () => {
+      expect(state.memory[state.sp]).toBe(0x06);
+      expect(state.memory[state.sp + 1]).toBe(0x07);
+      expect(state.l).toBe(0x04);
+      expect(state.h).toBe(0x05);
+    };
+    testInstruction(state, 0xe3, 1, 4, before, after);
   });
 
   test("0xe5", () => {
