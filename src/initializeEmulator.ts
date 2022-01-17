@@ -2,14 +2,13 @@ import emulateInstruction from "./emulateInstruction";
 import State8080 from "./state8080";
 
 let state: State8080;
-let instructionStartTime: number;
 let frameStartTime: number;
+let count: number = 0;
 
-const sleep = async (ms: number) => {
-  return new Promise((resolve) => {
+const sleep = async (ms: number) =>
+  new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-}
 
 const updateDisplay = () => {
   const ctx = (
@@ -40,7 +39,7 @@ const updateDisplay = () => {
   ctx.putImageData(imageData, 0, 0);
 };
 
-const processInterrupt = async () => {
+const processInterrupt = (time: number): boolean => {
   if (state.enableInterrupt) {
     state.memory[state.sp - 1] = (state.pc >> 8) & 0xff;
     state.memory[state.sp - 2] = state.pc & 0xff;
@@ -49,19 +48,18 @@ const processInterrupt = async () => {
 
     if (state.interruptPointer === 0x10) {
       state.interruptPointer = 0x08;
+      return false;
     } else {
-      const instructionExecutionTime = Math.floor(performance.now()) - instructionStartTime;
-      const timeBetweenFrames = Math.floor(performance.now()) - frameStartTime;
-      frameStartTime = performance.now();
+      const timeBetweenFrames = time - frameStartTime;
+      frameStartTime = time;
       const fpsDisplay = document.getElementById("fps");
-      fpsDisplay.innerText = `FPS: ${Math.round(1000 / timeBetweenFrames)}`
-      updateDisplay();
-      if (instructionExecutionTime < 17) {
-        /* eslint-disable-next-line no-await-in-loop */
-        await sleep(17 - instructionExecutionTime);
-      }
-      instructionStartTime = Math.floor(performance.now());
+      fpsDisplay.innerText = `FPS: ${Math.round(1000 / timeBetweenFrames)}`;
+
       state.interruptPointer = 0x10;
+
+      updateDisplay();
+
+      return true;
     }
   }
 };
@@ -69,21 +67,12 @@ const processInterrupt = async () => {
 const convert = (a: number, pad: number): string =>
   Number(a).toString(16).padStart(pad, "0");
 
-const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
-  const reader = <FileReader>loadFileEvent.currentTarget;
-  const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
-  instructionStartTime = Math.floor(performance.now());
-  frameStartTime = instructionStartTime;
-  state = new State8080();
-  for (let i = 0; i < romBuffer.length; i += 1) {
-    state.memory[i] = romBuffer[i];
-  }
-
-  for (let i = 0; i < 2000000; i += 1) {
-    if (i > 1980417 && i % 1 === 0) {
+const emulatorLoop = (time: number) => {
+  while (true) {
+    if (count > 1980417 && count % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
-        `${i}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
+        `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
           state.c,
           2
         )} ${convert(state.d, 2)}${convert(state.e, 2)} ${convert(
@@ -97,14 +86,31 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
         }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
       );
     }
+  
     emulateInstruction(state);
-
+  
     if (state.cycles <= 0) {
-      /* eslint-disable-next-line no-await-in-loop */
-      await processInterrupt();
       state.cycles += 16667;
+      const breakLoop = processInterrupt(time);
+      if (breakLoop) {
+        break;
+      }
     }
   }
+
+  requestAnimationFrame(emulatorLoop);
+}
+
+const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
+  const reader = <FileReader>loadFileEvent.currentTarget;
+  const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
+  frameStartTime = performance.now();
+  state = new State8080();
+  for (let i = 0; i < romBuffer.length; i += 1) {
+    state.memory[i] = romBuffer[i];
+  }
+
+  requestAnimationFrame(emulatorLoop);
 };
 
 export default initializeEmulator;
