@@ -2,9 +2,10 @@ import emulateInstruction from "./emulateInstruction";
 import State8080 from "./state8080";
 
 let state: State8080;
-let startFrame: number;
+let instructionStartTime: number;
+let frameStartTime: number;
 
-function sleep(ms: number) {
+const sleep = async (ms: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
@@ -49,16 +50,17 @@ const processInterrupt = async () => {
     if (state.interruptPointer === 0x10) {
       state.interruptPointer = 0x08;
     } else {
-      const timeBetweenFrames = Math.floor(performance.now()) - startFrame;
-      startFrame = Math.floor(performance.now());
+      const instructionExecutionTime = Math.floor(performance.now()) - instructionStartTime;
+      const timeBetweenFrames = Math.floor(performance.now()) - frameStartTime;
+      frameStartTime = performance.now();
       const fpsDisplay = document.getElementById("fps");
+      fpsDisplay.innerText = `FPS: ${Math.round(1000 / timeBetweenFrames)}`
       updateDisplay();
-      if (timeBetweenFrames < 17) {
-        fpsDisplay.innerText = `FPS: 60 ${timeBetweenFrames}`;
-        await sleep(17 - timeBetweenFrames);
-      } else {
-        fpsDisplay.innerText = `FPS: ${1000 / timeBetweenFrames}`;
+      if (instructionExecutionTime < 17) {
+        /* eslint-disable-next-line no-await-in-loop */
+        await sleep(17 - instructionExecutionTime);
       }
+      instructionStartTime = Math.floor(performance.now());
       state.interruptPointer = 0x10;
     }
   }
@@ -70,7 +72,8 @@ const convert = (a: number, pad: number): string =>
 const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   const reader = <FileReader>loadFileEvent.currentTarget;
   const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
-  startFrame = Math.floor(performance.now());
+  instructionStartTime = Math.floor(performance.now());
+  frameStartTime = instructionStartTime;
   state = new State8080();
   for (let i = 0; i < romBuffer.length; i += 1) {
     state.memory[i] = romBuffer[i];
