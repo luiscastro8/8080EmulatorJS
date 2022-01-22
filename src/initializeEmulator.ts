@@ -5,11 +5,6 @@ let state: State8080;
 let frameStartTime: number;
 let count: number = 0;
 
-const sleep = async (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
 const updateDisplay = () => {
   const ctx = (
     document.getElementById("canvas") as HTMLCanvasElement
@@ -49,26 +44,27 @@ const processInterrupt = (time: number): boolean => {
     if (state.interruptPointer === 0x10) {
       state.interruptPointer = 0x08;
       return false;
-    } else {
-      const timeBetweenFrames = time - frameStartTime;
-      frameStartTime = time;
-      const fpsDisplay = document.getElementById("fps");
-      fpsDisplay.innerText = `FPS: ${Math.round(1000 / timeBetweenFrames)}`;
-
-      state.interruptPointer = 0x10;
-
-      updateDisplay();
-
-      return true;
     }
+    const timeBetweenFrames = time - frameStartTime;
+    frameStartTime = time;
+    const fpsDisplay = document.getElementById("fps");
+    fpsDisplay.innerText = `FPS: ${Math.round(1000 / timeBetweenFrames)}`;
+
+    state.interruptPointer = 0x10;
+
+    updateDisplay();
+
+    return true;
   }
+  return false;
 };
 
 const convert = (a: number, pad: number): string =>
   Number(a).toString(16).padStart(pad, "0");
 
 const emulatorLoop = (time: number) => {
-  while (true) {
+  let shouldBreakLoop = false;
+  while (!shouldBreakLoop) {
     if (count > 1980417 && count % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
@@ -86,20 +82,18 @@ const emulatorLoop = (time: number) => {
         }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
       );
     }
-  
+
     emulateInstruction(state);
-  
+    count += 1;
+
     if (state.cycles <= 0) {
       state.cycles += 16667;
-      const breakLoop = processInterrupt(time);
-      if (breakLoop) {
-        break;
-      }
+      shouldBreakLoop = processInterrupt(time);
     }
   }
 
   requestAnimationFrame(emulatorLoop);
-}
+};
 
 const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   const reader = <FileReader>loadFileEvent.currentTarget;
