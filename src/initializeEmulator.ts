@@ -26,7 +26,7 @@ const updateDisplay = () => {
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 2] = 0;
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 3] = 255;
         }
-        byte = Math.floor(byte / 2);
+        byte = (byte / 2) >>> 0;
       }
       videoPointer += 1;
     }
