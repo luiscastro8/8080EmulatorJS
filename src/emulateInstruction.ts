@@ -104,6 +104,15 @@ const emulateInstruction = (state: State8080) => {
       LDAX(state, STATEEnums.D);
       break;
     }
+    case 0x1f: {
+      const lastBit = state.a & 0b1;
+      state.a >>= 1;
+      state.a |= (state.cc.cy ? 1 : 0) << 7;
+      state.cc.cy = !!lastBit;
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0x21: {
       LXI(state, STATEEnums.H);
       break;
@@ -125,6 +134,14 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x29: {
       DAD(state, STATEEnums.H);
+      break;
+    }
+    case 0x2a: {
+      const address = (instruction[2] << 8) | instruction[1];
+      state.l = state.memory[address];
+      state.h = state.memory[address + 1];
+      state.pc += 3;
+      state.cycles -= 16;
       break;
     }
     case 0x2b: {
