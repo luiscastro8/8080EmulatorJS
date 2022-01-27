@@ -31,6 +31,13 @@ const emulateInstruction = (state: State8080) => {
       INX(state, STATEEnums.B);
       break;
     }
+    case 0x04: {
+      state.b += 1;
+      state.cc.setFlags(state.b, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x05: {
       state.b -= 1;
       state.cc.setFlags(state.b, false);
@@ -546,6 +553,13 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xf5: {
       PUSH(state, STATEEnums.PSW);
+      break;
+    }
+    case 0xf6: {
+      state.a |= instruction[1];
+      state.cc.setFlags(state.a, true);
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0xfb: {
