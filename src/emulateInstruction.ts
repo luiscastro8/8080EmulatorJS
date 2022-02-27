@@ -16,8 +16,8 @@ import State8080 from "./state8080";
 /* eslint-disable no-param-reassign */
 const emulateInstruction = (state: State8080) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
-  const opcode = instruction[0];
-  switch (opcode) {
+  const theOpCode = instruction[0];
+  switch (theOpCode) {
     case 0x00: {
       state.pc += 1;
       state.cycles -= 4;
@@ -124,6 +124,14 @@ const emulateInstruction = (state: State8080) => {
       LXI(state, STATEEnums.H);
       break;
     }
+    case 0x22: {
+      const address = (instruction[2] << 8) | instruction[1];
+      state.memory[address] = state.l;
+      state.memory[address + 1] = state.h;
+      state.pc += 3;
+      state.cycles -= 16;
+      break;
+    }
     case 0x23: {
       let address = (state.h << 8) | state.l;
       address += 1;
@@ -198,6 +206,13 @@ const emulateInstruction = (state: State8080) => {
       state.a = state.memory[address];
       state.pc += 3;
       state.cycles -= 13;
+      break;
+    }
+    case 0x3c: {
+      state.a += 1;
+      state.cc.setFlags(state.a, false);
+      state.pc += 1;
+      state.cycles -= 5;
       break;
     }
     case 0x3d: {
@@ -589,7 +604,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     default: {
-      throw new Error(`unknown opcode: 0x${Number(opcode).toString(16)}`);
+      throw new Error(`unknown opcode: 0x${Number(theOpCode).toString(16)}`);
     }
   }
 };
