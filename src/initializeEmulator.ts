@@ -9,7 +9,7 @@ const updateDisplay = () => {
   const ctx = (
     document.getElementById("canvas") as HTMLCanvasElement
   ).getContext("2d");
-  const imageData = ctx.getImageData(0, 0, 224, 256);
+  const imageData = new ImageData(224, 256);
   let videoPointer = 0x2400;
   for (let w = 0; w < 224; w += 1) {
     for (let h = 31; h >= 0; h -= 1) {
