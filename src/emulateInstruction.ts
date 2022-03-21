@@ -1,4 +1,5 @@
 import {
+  CALL,
   DAD,
   DCR,
   DCX,
@@ -462,12 +463,18 @@ const emulateInstruction = (state: State8080) => {
       JUMP(state, JumpEnums.Z);
       break;
     }
+    case 0xcc: {
+      if (state.cc.z) {
+        CALL(state, (instruction[2] << 8) | instruction[1]);
+        state.cycles -= 18;
+      } else {
+        state.pc += 3;
+        state.cycles -= 11;
+      }
+      break;
+    }
     case 0xcd: {
-      const returnAddress = state.pc + 3;
-      state.memory[state.sp - 1] = returnAddress >> 8;
-      state.memory[state.sp - 2] = returnAddress & 0xff;
-      state.sp -= 2;
-      state.pc = (instruction[2] << 8) | instruction[1];
+      CALL(state, (instruction[2] << 8) | instruction[1]);
       state.cycles -= 17;
       break;
     }

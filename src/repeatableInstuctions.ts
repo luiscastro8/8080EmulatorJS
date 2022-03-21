@@ -14,6 +14,14 @@ export enum JumpEnums {
   Z,
 }
 
+export const CALL = (state: State8080, newAddress: number) => {
+  const returnAddress = state.pc + 3;
+  state.memory[state.sp - 1] = returnAddress >> 8;
+  state.memory[state.sp - 2] = returnAddress & 0xff;
+  state.sp -= 2;
+  state.pc = newAddress;
+};
+
 export const DAD = (state: State8080, arg: STATEEnums) => {
   switch (arg) {
     case STATEEnums.B: {

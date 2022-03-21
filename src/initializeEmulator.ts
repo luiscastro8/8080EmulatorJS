@@ -88,7 +88,9 @@ const emulatorLoop = (time: number) => {
 
     if (state.cycles <= 0) {
       state.cycles += 16667;
-      shouldBreakLoop = processInterrupt(time);
+      if (state.enableInterrupt) {
+        shouldBreakLoop = processInterrupt(time);
+      }
     }
   }
 

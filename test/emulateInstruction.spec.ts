@@ -1,17 +1,20 @@
 import emulateInstruction from "../src/emulateInstruction";
 import State8080 from "../src/state8080";
 import { testInstruction } from "./emulateInstructionUtils";
+import * as repeatableInstuctions from "../src/repeatableInstuctions";
 
 describe("emulate instructions", () => {
   let state: State8080;
   let setFlagsSpy: jest.SpyInstance;
   let writeToPortSpy: jest.SpyInstance;
   let readFromPortSpy: jest.SpyInstance;
+  let CALLSpy: jest.SpyInstance;
   beforeEach(() => {
     state = new State8080();
     setFlagsSpy = jest.spyOn(state.cc, "setFlags");
     writeToPortSpy = jest.spyOn(state, "writeToPort");
     readFromPortSpy = jest.spyOn(state, "readFromPort");
+    CALLSpy = jest.spyOn(repeatableInstuctions, "CALL");
   });
 
   test("unknown opcode", () => {
@@ -922,20 +925,33 @@ describe("emulate instructions", () => {
     });
   });
 
+  describe("0xcc", () => {
+    test("cc.z is true", () => {
+      const before = () => {
+        state.cc.z = true;
+      };
+      const after = () => {
+        expect(CALLSpy).toBeCalled();
+      };
+      testInstruction(state, 0xcc, undefined, 18, before, after);
+    });
+
+    test("cc.z is false", () => {
+      const before = () => {
+        state.cc.z = false;
+      };
+      const after = () => {
+        expect(CALLSpy).not.toBeCalled();
+      };
+      testInstruction(state, 0xcc, 3, 11, before, after);
+    });
+  });
+
   test("0xcd", () => {
-    const { sp, cycles } = state;
-    state.pc = 0x2021;
-    state.memory[state.pc] = 0xcd;
-    state.memory[state.pc + 1] = 0x22;
-    state.memory[state.pc + 2] = 0x23;
-
-    emulateInstruction(state);
-
-    expect(state.sp).toBe(sp - 2);
-    expect(state.pc).toBe(0x2322);
-    expect(state.memory[sp - 1]).toBe(0x20);
-    expect(state.memory[sp - 2]).toBe(0x21 + 3);
-    expect(state.cycles).toBe(cycles - 17);
+    const after = () => {
+      expect(CALLSpy).toBeCalled();
+    };
+    testInstruction(state, 0xcd, undefined, 17, undefined, after);
   });
 
   describe("0xd0", () => {
