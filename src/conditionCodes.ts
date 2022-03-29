@@ -10,6 +10,7 @@ export default class ConditionCodes {
   public ac: boolean = false;
   // TODO see if pad is needed
 
+  // answer must be 16-bit
   public setFlags = (answer: number, changeCarry: boolean) => {
     this.z = (answer & 0xff) === 0;
     this.s = (answer & 0x80) !== 0;

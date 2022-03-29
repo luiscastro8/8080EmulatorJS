@@ -236,6 +236,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0x47: {
+      state.b = state.a;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x4e: {
       const address = HILO(state.h, state.l);
       state.c = state.memory[address];
@@ -559,6 +565,15 @@ const emulateInstruction = (state: State8080) => {
       state.readFromPort(instruction[1]);
       state.pc += 2;
       state.cycles -= 10;
+      break;
+    }
+    case 0xde: {
+      // set in a temporary variable instead of directly to state.a so bits don't get lost
+      const answer = state.a - instruction[1] - (state.cc.cy ? 1 : 0);
+      state.a = answer;
+      state.cc.setFlags(answer, true);
+      state.pc += 2;
+      state.cycles -= 7;
       break;
     }
     case 0xe1: {

@@ -490,6 +490,16 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x46, 1, 7, before, after);
   });
 
+  test("0x47", () => {
+    const before = () => {
+      state.a = 0x04;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x04);
+    };
+    testInstruction(state, 0x47, 1, 5, before, after);
+  });
+
   test("0x4e", () => {
     const before = () => {
       state.h = 0x20;
@@ -1130,6 +1140,19 @@ describe("emulate instructions", () => {
       expect(readFromPortSpy).toBeCalled();
     };
     testInstruction(state, 0xdb, 2, 10, undefined, after);
+  });
+
+  test("0xde", () => {
+    const before = () => {
+      state.a = 0x50;
+      state.memory[state.pc + 1] = 0x05;
+      state.cc.cy = true;
+    };
+    const after = () => {
+      expect(setFlagsSpy).toBeCalled();
+      expect(state.a).toBe(0x4a);
+    };
+    testInstruction(state, 0xde, 2, 7, before, after);
   });
 
   test("0xe1", () => {

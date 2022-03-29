@@ -65,7 +65,7 @@ const convert = (a: number, pad: number): string =>
 const emulatorLoop = (time: number) => {
   let shouldBreakLoop = false;
   while (!shouldBreakLoop) {
-    if (count > 1980417 && count % 1 === 0) {
+    if (count > 2022839 && count % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
