@@ -14,7 +14,9 @@ import {
 } from "./repeatableInstuctions";
 import State8080 from "./state8080";
 
-/* eslint-disable no-param-reassign */
+/* Takes two 8-bit numbers and combines them into one 16-bit number */
+const HILO = (hi: number, lo: number): number => (hi << 8) | lo;
+
 const emulateInstruction = (state: State8080) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
   const theOpCode = instruction[0];
@@ -126,7 +128,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x22: {
-      const address = (instruction[2] << 8) | instruction[1];
+      const address = HILO(instruction[2], instruction[1]);
       state.memory[address] = state.l;
       state.memory[address + 1] = state.h;
       state.pc += 3;
@@ -134,7 +136,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x23: {
-      let address = (state.h << 8) | state.l;
+      let address = HILO(state.h, state.l);
       address += 1;
       state.h = (address >> 8) & 0xff;
       state.l = address & 0xff;
@@ -153,7 +155,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x2a: {
-      const address = (instruction[2] << 8) | instruction[1];
+      const address = HILO(instruction[2], instruction[1]);
       state.l = state.memory[address];
       state.h = state.memory[address + 1];
       state.pc += 3;
@@ -175,14 +177,14 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x32: {
-      const address = (instruction[2] << 8) | instruction[1];
+      const address = HILO(instruction[2], instruction[1]);
       state.memory[address] = state.a;
       state.pc += 3;
       state.cycles -= 13;
       break;
     }
     case 0x35: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.memory[address] -= 1;
       state.cc.setFlags(state.memory[address], false);
       state.pc += 1;
@@ -190,7 +192,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x36: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.memory[address] = instruction[1];
       state.pc += 2;
       state.cycles -= 10;
@@ -203,7 +205,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x3a: {
-      const address = (instruction[2] << 8) | instruction[1];
+      const address = HILO(instruction[2], instruction[1]);
       state.a = state.memory[address];
       state.pc += 3;
       state.cycles -= 13;
@@ -230,7 +232,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x46: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.b = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
@@ -243,7 +245,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x56: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.d = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
@@ -256,7 +258,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x5e: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.e = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
@@ -269,7 +271,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x66: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.h = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
@@ -288,14 +290,14 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x70: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.memory[address] = state.b;
       state.pc += 1;
       state.cycles -= 7;
       break;
     }
     case 0x77: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.memory[address] = state.a;
       state.pc += 1;
       state.cycles -= 7;
@@ -338,7 +340,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0x7e: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.a = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
@@ -379,7 +381,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xb6: {
-      const address = (state.h << 8) | state.l;
+      const address = HILO(state.h, state.l);
       state.a |= state.memory[address];
       state.cc.setFlags(state.a, true);
       state.pc += 1;
@@ -388,7 +390,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xc0: {
       if (!state.cc.z) {
-        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.pc = HILO(state.memory[state.sp + 1], state.memory[state.sp]);
         state.sp += 2;
         state.cycles -= 11;
       } else {
@@ -403,7 +405,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xc2: {
       if (!state.cc.z) {
-        state.pc = (instruction[2] << 8) | instruction[1];
+        state.pc = HILO(instruction[2], instruction[1]);
         state.cycles -= 15;
       } else {
         state.pc += 3;
@@ -412,7 +414,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xc3: {
-      state.pc = (instruction[2] << 8) | instruction[1];
+      state.pc = HILO(instruction[2], instruction[1]);
       state.cycles -= 10;
       break;
     }
@@ -422,7 +424,7 @@ const emulateInstruction = (state: State8080) => {
         state.memory[state.sp - 1] = (returnAddress >> 8) & 0xff;
         state.memory[state.sp - 2] = returnAddress & 0xff;
         state.sp -= 2;
-        state.pc = (instruction[2] << 8) | instruction[1];
+        state.pc = HILO(instruction[2], instruction[1]);
         state.cycles -= 18;
       } else {
         state.pc += 3;
@@ -444,7 +446,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xc8: {
       if (state.cc.z) {
-        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.pc = HILO(state.memory[state.sp + 1], state.memory[state.sp]);
         state.sp += 2;
         state.cycles -= 11;
       } else {
@@ -454,7 +456,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xc9: {
-      state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+      state.pc = HILO(state.memory[state.sp + 1], state.memory[state.sp]);
       state.sp += 2;
       state.cycles -= 10;
       break;
@@ -465,7 +467,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xcc: {
       if (state.cc.z) {
-        CALL(state, (instruction[2] << 8) | instruction[1]);
+        CALL(state, HILO(instruction[2], instruction[1]));
         state.cycles -= 18;
       } else {
         state.pc += 3;
@@ -474,13 +476,13 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xcd: {
-      CALL(state, (instruction[2] << 8) | instruction[1]);
+      CALL(state, HILO(instruction[2], instruction[1]));
       state.cycles -= 17;
       break;
     }
     case 0xd0: {
       if (!state.cc.cy) {
-        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.pc = HILO(state.memory[state.sp + 1], state.memory[state.sp]);
         state.sp += 2;
         state.cycles -= 11;
       } else {
@@ -517,7 +519,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xd8: {
       if (state.cc.cy) {
-        state.pc = state.memory[state.sp] | (state.memory[state.sp + 1] << 8);
+        state.pc = HILO(state.memory[state.sp + 1], state.memory[state.sp]);
         state.sp += 2;
         state.cycles -= 11;
       } else {
@@ -528,7 +530,7 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0xda: {
       if (state.cc.cy) {
-        state.pc = (instruction[2] << 8) | instruction[1];
+        state.pc = HILO(instruction[2], instruction[1]);
         state.cycles -= 15;
       } else {
         state.pc += 3;
@@ -547,7 +549,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xe3: {
-      const hl = (state.h << 8) | state.l;
+      const hl = HILO(state.h, state.l);
       state.l = state.memory[state.sp];
       state.memory[state.sp] = hl & 0xff;
       state.h = state.memory[state.sp + 1];
@@ -568,7 +570,7 @@ const emulateInstruction = (state: State8080) => {
       break;
     }
     case 0xe9: {
-      state.pc = (state.h << 8) | state.l;
+      state.pc = HILO(state.h, state.l);
       state.cycles -= 4;
       break;
     }
