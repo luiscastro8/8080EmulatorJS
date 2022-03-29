@@ -275,6 +275,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 5;
       break;
     }
+    case 0x61: {
+      state.h = state.c;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x66: {
       const address = HILO(state.h, state.l);
       state.h = state.memory[address];
@@ -284,6 +290,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x67: {
       state.h = state.a;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
+    case 0x68: {
+      state.l = state.b;
       state.pc += 1;
       state.cycles -= 5;
       break;
