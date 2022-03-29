@@ -1,4 +1,5 @@
 import State8080 from "./state8080";
+import { HILO } from "./utils";
 
 export enum STATEEnums {
   B,
@@ -9,7 +10,7 @@ export enum STATEEnums {
 }
 
 export enum JumpEnums {
-  CY,
+  M,
   NCY,
   Z,
 }
@@ -117,9 +118,19 @@ export const INX = (state: State8080, arg: STATEEnums) => {
 export const JUMP = (state: State8080, arg: JumpEnums) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
   switch (arg) {
+    case JumpEnums.M: {
+      if (state.cc.s) {
+        state.pc = HILO(instruction[2], instruction[1]);
+        state.cycles -= 15;
+      } else {
+        state.pc += 3;
+        state.cycles -= 10;
+      }
+      break;
+    }
     case JumpEnums.NCY: {
       if (!state.cc.cy) {
-        state.pc = (instruction[2] << 8) | instruction[1];
+        state.pc = HILO(instruction[2], instruction[1]);
         state.cycles -= 15;
       } else {
         state.pc += 3;
@@ -129,7 +140,7 @@ export const JUMP = (state: State8080, arg: JumpEnums) => {
     }
     case JumpEnums.Z: {
       if (state.cc.z) {
-        state.pc = (instruction[2] << 8) | instruction[1];
+        state.pc = HILO(instruction[2], instruction[1]);
         state.cycles -= 15;
       } else {
         state.pc += 3;

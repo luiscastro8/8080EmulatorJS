@@ -13,9 +13,7 @@ import {
   STATEEnums,
 } from "./repeatableInstuctions";
 import State8080 from "./state8080";
-
-/* Takes two 8-bit numbers and combines them into one 16-bit number */
-const HILO = (hi: number, lo: number): number => (hi << 8) | lo;
+import { HILO } from "./utils";
 
 const emulateInstruction = (state: State8080) => {
   const instruction = state.memory.slice(state.pc, state.pc + 3);
@@ -234,6 +232,13 @@ const emulateInstruction = (state: State8080) => {
     case 0x46: {
       const address = HILO(state.h, state.l);
       state.b = state.memory[address];
+      state.pc += 1;
+      state.cycles -= 7;
+      break;
+    }
+    case 0x4e: {
+      const address = HILO(state.h, state.l);
+      state.c = state.memory[address];
       state.pc += 1;
       state.cycles -= 7;
       break;
@@ -598,6 +603,10 @@ const emulateInstruction = (state: State8080) => {
       state.cc.setFlags(state.a, true);
       state.pc += 2;
       state.cycles -= 7;
+      break;
+    }
+    case 0xfa: {
+      JUMP(state, JumpEnums.M);
       break;
     }
     case 0xfb: {
