@@ -98,6 +98,20 @@ const emulateInstruction = (state: State8080) => {
       INX(state, STATEEnums.D);
       break;
     }
+    case 0x14: {
+      state.d += 1;
+      state.cc.setFlags(state.d, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
+    case 0x15: {
+      state.d -= 1;
+      state.cc.setFlags(state.d, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x16: {
       state.d = instruction[1];
       state.pc += 2;
