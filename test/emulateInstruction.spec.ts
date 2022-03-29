@@ -2,6 +2,7 @@ import emulateInstruction from "../src/emulateInstruction";
 import State8080 from "../src/state8080";
 import { testInstruction } from "./emulateInstructionUtils";
 import * as repeatableInstuctions from "../src/repeatableInstuctions";
+import { HILO } from "../src/utils";
 
 describe("emulate instructions", () => {
   let state: State8080;
@@ -400,6 +401,16 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x2e, 2, 7, before, after);
   });
 
+  test("0x2f", () => {
+    const before = () => {
+      state.a = 0b10101010;
+    };
+    const after = () => {
+      expect(state.a).toBe(0b01010101);
+    };
+    testInstruction(state, 0x2f, 1, 4, before, after);
+  });
+
   test("0x31", () => {
     const before = () => {
       state.memory[state.pc + 1] = 0x21;
@@ -734,6 +745,19 @@ describe("emulate instructions", () => {
       expect(state.a).toBe(0x21);
     };
     testInstruction(state, 0x7e, 1, 7, before, after);
+  });
+
+  test("0x86", () => {
+    const before = () => {
+      state.a = 0x05;
+      state.h = 0x20;
+      state.l = 0x21;
+      state.memory[HILO(state.h, state.l)] = 0x24;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x29);
+    };
+    testInstruction(state, 0x86, 1, 7, before, after);
   });
 
   test("0xa7", () => {
