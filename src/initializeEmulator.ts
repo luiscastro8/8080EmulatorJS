@@ -21,8 +21,8 @@ const updateDisplay = () => {
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 2] = 0;
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 3] = 255;
         } else {
-          imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 0] = 255;
-          imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 1] = 0;
+          imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 0] = 0;
+          imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 1] = 255;
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 2] = 0;
           imageData.data[((h + 1) * 1792 - b * 224 + w) * 4 + 3] = 255;
         }
@@ -65,7 +65,7 @@ const convert = (a: number, pad: number): string =>
 const emulatorLoop = (time: number) => {
   let shouldBreakLoop = false;
   while (!shouldBreakLoop) {
-    if (count > 2696648 && count % 1 === 0) {
+    if (count > 2734120 && count % 1 === 0) {
       /* eslint-disable-next-line no-console */
       console.log(
         `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
