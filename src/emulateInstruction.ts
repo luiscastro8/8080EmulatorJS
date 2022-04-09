@@ -70,6 +70,13 @@ const emulateInstruction = (state: State8080) => {
       LDAX(state, STATEEnums.B);
       break;
     }
+    case 0x0c: {
+      state.c += 1;
+      state.cc.setFlags(state.c, false);
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x0d: {
       DCR(state, STATEEnums.B);
       break;
@@ -318,6 +325,12 @@ const emulateInstruction = (state: State8080) => {
     }
     case 0x61: {
       state.h = state.c;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
+    case 0x65: {
+      state.h = state.l;
       state.pc += 1;
       state.cycles -= 5;
       break;
