@@ -545,6 +545,16 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x3e, 2, 7, before, after);
   });
 
+  test("0x41", () => {
+    const before = () => {
+      state.c = 0x25;
+    };
+    const after = () => {
+      expect(state.b).toBe(0x25);
+    };
+    testInstruction(state, 0x41, 1, 5, before, after);
+  });
+
   test("0x46", () => {
     const before = () => {
       state.l = 0x22;
@@ -822,6 +832,17 @@ describe("emulate instructions", () => {
       expect(state.a).toBe(0x09);
     };
     testInstruction(state, 0x80, 1, 4, before, after);
+  });
+
+  test("0x81", () => {
+    const before = () => {
+      state.a = 0x04;
+      state.c = 0x05;
+    };
+    const after = () => {
+      expect(state.a).toBe(0x09);
+    };
+    testInstruction(state, 0x81, 1, 4, before, after);
   });
 
   test("0x85", () => {
