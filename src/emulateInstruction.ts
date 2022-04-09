@@ -133,6 +133,15 @@ const emulateInstruction = (state: State8080) => {
       LDAX(state, STATEEnums.D);
       break;
     }
+    case 0x1b: {
+      let de = HILO(state.d, state.e);
+      de -= 1;
+      state.d = (de >> 8) & 0xff;
+      state.e = de & 0xff;
+      state.pc += 1;
+      state.cycles -= 6;
+      break;
+    }
     case 0x1f: {
       const lastBit = state.a & 0b1;
       state.a >>= 1;
@@ -167,6 +176,20 @@ const emulateInstruction = (state: State8080) => {
       state.h = instruction[1];
       state.pc += 2;
       state.cycles -= 7;
+      break;
+    }
+    case 0x27: {
+      let answer = state.a;
+      if ((answer & 0xf) > 9) {
+        answer += 6;
+      }
+      if (answer >> 4 > 9) {
+        answer += 96;
+      }
+      state.cc.setFlags(answer, true);
+      state.a = answer;
+      state.pc += 1;
+      state.cycles -= 4;
       break;
     }
     case 0x29: {
