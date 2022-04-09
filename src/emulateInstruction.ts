@@ -469,6 +469,13 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 7;
       break;
     }
+    case 0x97: {
+      state.a = 0;
+      state.cc.setFlags(state.a, true);
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0xa0: {
       state.a &= state.b;
       state.cc.setFlags(state.a, true);

@@ -65,23 +65,23 @@ const convert = (a: number, pad: number): string =>
 const emulatorLoop = (time: number) => {
   let shouldBreakLoop = false;
   while (!shouldBreakLoop) {
-    if (count > 4352200 && count % 1 === 0) {
-      /* eslint-disable-next-line no-console */
-      console.log(
-        `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
-          state.c,
-          2
-        )} ${convert(state.d, 2)}${convert(state.e, 2)} ${convert(
-          state.h,
-          2
-        )}${convert(state.l, 2)} ${convert(state.pc, 4)} ${convert(
-          state.sp,
-          4
-        )} ${state.cc.z ? "z" : "."}${state.cc.s ? "s" : "."}${
-          state.cc.p ? "p" : "."
-        }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
-      );
-    }
+    // if (count > 4352200 && count % 1000 === 0) {
+    //   /* eslint-disable-next-line no-console */
+    //   console.log(
+    //     `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
+    //       state.c,
+    //       2
+    //     )} ${convert(state.d, 2)}${convert(state.e, 2)} ${convert(
+    //       state.h,
+    //       2
+    //     )}${convert(state.l, 2)} ${convert(state.pc, 4)} ${convert(
+    //       state.sp,
+    //       4
+    //     )} ${state.cc.z ? "z" : "."}${state.cc.s ? "s" : "."}${
+    //       state.cc.p ? "p" : "."
+    //     }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
+    //   );
+    // }
 
     emulateInstruction(state);
     count += 1;

@@ -870,6 +870,17 @@ describe("emulate instructions", () => {
     testInstruction(state, 0x86, 1, 7, before, after);
   });
 
+  test("0x97", () => {
+    const before = () => {
+      state.a = 0x06;
+    };
+    const after = () => {
+      expect(setFlagsSpy).toBeCalled();
+      expect(state.a).toBe(0x00);
+    };
+    testInstruction(state, 0x97, 1, 4, before, after);
+  });
+
   test("0xa0", () => {
     const before = () => {
       state.a = 0b01010101;
