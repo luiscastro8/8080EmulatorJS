@@ -927,6 +927,13 @@ describe("emulate instructions", () => {
     testInstruction(state, 0xb8, 1, 4, undefined, after);
   });
 
+  test("0xbc", () => {
+    const after = () => {
+      expect(setFlagsSpy).toBeCalled();
+    };
+    testInstruction(state, 0xbc, 1, 4, undefined, after);
+  });
+
   test("0xbe", () => {
     const before = () => {
       state.a = 0x09;
@@ -1221,6 +1228,25 @@ describe("emulate instructions", () => {
       expect(writeToPortSpy).toBeCalledWith(0x20);
     };
     testInstruction(state, 0xd3, 2, 10, before, after);
+  });
+
+  describe("0xd4", () => {
+    test("cc.cy is false", () => {
+      const before = () => {
+        state.cc.cy = false;
+      };
+      const after = () => {
+        expect(CALLSpy).toBeCalled();
+      };
+      testInstruction(state, 0xd4, undefined, 18, before, after);
+    });
+
+    test("cc.cy is true", () => {
+      const before = () => {
+        state.cc.cy = true;
+      };
+      testInstruction(state, 0xd4, 3, 11, before);
+    });
   });
 
   test("0xd5", () => {

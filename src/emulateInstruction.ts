@@ -505,6 +505,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 4;
       break;
     }
+    case 0xbc: {
+      state.cc.setFlags(state.a - state.h, true);
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0xbe: {
       const address = HILO(state.h, state.l);
       state.cc.setFlags(state.a - state.memory[address], true);
@@ -627,6 +633,16 @@ const emulateInstruction = (state: State8080) => {
       state.writeToPort(instruction[1]);
       state.pc += 2;
       state.cycles -= 10;
+      break;
+    }
+    case 0xd4: {
+      if (!state.cc.cy) {
+        CALL(state, HILO(instruction[2], instruction[1]));
+        state.cycles -= 18;
+      } else {
+        state.pc += 3;
+        state.cycles -= 11;
+      }
       break;
     }
     case 0xd5: {
