@@ -1,9 +1,10 @@
 import emulateInstruction from "./emulateInstruction";
+import InputManager from "./inputManager";
 import State8080 from "./state8080";
 
 let state: State8080;
+let inputManager: InputManager;
 let frameStartTime: number;
-let count: number = 0;
 
 const updateDisplay = () => {
   const ctx = (
@@ -59,32 +60,40 @@ const processInterrupt = (time: number): boolean => {
   return false;
 };
 
-const convert = (a: number, pad: number): string =>
-  Number(a).toString(16).padStart(pad, "0");
+const processInputDown = (event: KeyboardEvent) => {
+  if (event.code === "KeyC") {
+    inputManager.credit = true;
+  } else if (event.code === "Enter") {
+    inputManager.p1Start = true;
+  } else if (event.code === "KeyK") {
+    inputManager.p1Fire = true;
+  } else if (event.code === "KeyJ") {
+    inputManager.p1Left = true;
+  } else if (event.code === "KeyL") {
+    inputManager.p1Right = true;
+  }
+};
+
+const processInputUp = (event: KeyboardEvent) => {
+  if (event.code === "Enter") {
+    inputManager.p1Start = false;
+  } else if (event.code === "KeyC") {
+    inputManager.credit = false;
+  } else if (event.code === "KeyL") {
+    inputManager.p1Right = false;
+  } else if (event.code === "KeyK") {
+    inputManager.p1Fire = false;
+  } else if (event.code === "KeyJ") {
+    inputManager.p1Left = false;
+  }
+};
 
 const emulatorLoop = (time: number) => {
   let shouldBreakLoop = false;
   while (!shouldBreakLoop) {
-    // if (count > 4352200 && count % 1000 === 0) {
-    //   /* eslint-disable-next-line no-console */
-    //   console.log(
-    //     `${count}: ${convert(state.a, 2)} ${convert(state.b, 2)}${convert(
-    //       state.c,
-    //       2
-    //     )} ${convert(state.d, 2)}${convert(state.e, 2)} ${convert(
-    //       state.h,
-    //       2
-    //     )}${convert(state.l, 2)} ${convert(state.pc, 4)} ${convert(
-    //       state.sp,
-    //       4
-    //     )} ${state.cc.z ? "z" : "."}${state.cc.s ? "s" : "."}${
-    //       state.cc.p ? "p" : "."
-    //     }${state.enableInterrupt ? "i" : "."}${state.cc.cy ? "c" : "."}`
-    //   );
-    // }
+    state.ports.r1 = inputManager.getR1();
 
     emulateInstruction(state);
-    count += 1;
 
     if (state.cycles <= 0) {
       state.cycles += 16667;
@@ -102,9 +111,13 @@ const initializeEmulator = async (loadFileEvent: ProgressEvent<FileReader>) => {
   const romBuffer = new Uint8Array(<ArrayBuffer>reader.result);
   frameStartTime = performance.now();
   state = new State8080();
+  inputManager = new InputManager();
   for (let i = 0; i < romBuffer.length; i += 1) {
     state.memory[i] = romBuffer[i];
   }
+
+  document.onkeydown = processInputDown;
+  document.onkeyup = processInputUp;
 
   requestAnimationFrame(emulatorLoop);
 };
