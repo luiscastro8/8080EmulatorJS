@@ -101,6 +101,13 @@ const emulateInstruction = (state: State8080) => {
       LXI(state, STATEEnums.D);
       break;
     }
+    case 0x12: {
+      const address = HILO(state.d, state.e);
+      state.memory[address] = state.a;
+      state.pc += 1;
+      state.cycles -= 7;
+      break;
+    }
     case 0x13: {
       INX(state, STATEEnums.D);
       break;
@@ -313,6 +320,12 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 5;
       break;
     }
+    case 0x48: {
+      state.c = state.b;
+      state.pc += 1;
+      state.cycles -= 5;
+      break;
+    }
     case 0x4e: {
       const address = HILO(state.h, state.l);
       state.c = state.memory[address];
@@ -475,6 +488,14 @@ const emulateInstruction = (state: State8080) => {
       state.cycles -= 4;
       break;
     }
+    case 0x83: {
+      const answer = state.a + state.e;
+      state.a = answer & 0xff;
+      state.cc.setFlags(answer, true);
+      state.pc += 1;
+      state.cycles -= 4;
+      break;
+    }
     case 0x85: {
       const answer = state.a + state.l;
       state.a = answer;
@@ -490,6 +511,14 @@ const emulateInstruction = (state: State8080) => {
       state.cc.setFlags(answer, true);
       state.pc += 1;
       state.cycles -= 7;
+      break;
+    }
+    case 0x8a: {
+      const answer = state.a + state.d + (state.cc.cy ? 1 : 0);
+      state.a = answer & 0xff;
+      state.cc.setFlags(answer, true);
+      state.pc += 1;
+      state.cycles -= 4;
       break;
     }
     case 0x97: {
