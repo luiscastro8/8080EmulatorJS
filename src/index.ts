@@ -3,6 +3,9 @@ import initializeEmulator from "./initializeEmulator";
 const canvas = <HTMLCanvasElement>document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const imageData = ctx.createImageData(224, 256);
+const fullScreenButton = <HTMLButtonElement>(
+  document.getElementById("fullscreen-button")
+);
 
 const fileInput = <HTMLInputElement>document.getElementById("fileinput");
 fileInput.addEventListener("change", (event) => {
@@ -11,6 +14,9 @@ fileInput.addEventListener("change", (event) => {
 
   const file = (<HTMLInputElement>event.target).files[0];
   reader.readAsArrayBuffer(file);
+});
+fullScreenButton.addEventListener("click", () => {
+  canvas.requestFullscreen();
 });
 
 // Iterate through every pixel
